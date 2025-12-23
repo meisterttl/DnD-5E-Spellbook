@@ -1,0 +1,104 @@
+.spell {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  @media screen and (min-width: 50rem) {
+    width: 50%;
+  }
+
+  @media screen and (min-width: 81rem) {
+    width: 33.3%;
+  }
+
+  @media screen and (min-width: 108rem) {
+    width: 25%;
+  }
+
+  @media screen and (min-width: 135rem) {
+    width: 20%;
+  }
+}
+
+.spellCard {
+  /* margin-bottom: 1rem; */
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid gray;
+  overflow: hidden;
+}
+
+/* .spell-entries {
+  margin-top: 1rem;
+  margin-bottom: -1rem;
+  max-height: 0;
+} */
+
+.spellEntries {
+  margin-top: 0.5rem;
+
+  dd:first-child {
+    p:not(:first-child) {
+      text-indent: 1rem;
+    }
+  }
+
+  dd:not(:first-child) {
+    p {
+      text-indent: 1rem;
+    }
+  }
+}
+
+.spellEntriesTable {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  table {
+    width: 100%;
+  }
+
+  caption {
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  thead,
+  tbody {
+    font-size: 0.9rem;
+  }
+
+  th {
+    vertical-align: bottom;
+  }
+
+  th,
+  td {
+    padding: 0.2rem;
+    line-height: 1.4;
+
+    &.col-1 {
+      width: 10%;
+    }
+  }
+
+  td {
+    &.no-wrap {
+      text-wrap: nowrap;
+    }
+  }
+
+  th:not(.text-center) {
+    text-align: left;
+  }
+
+  td.text-center {
+    text-align: center;
+  }
+}

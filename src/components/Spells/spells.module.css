@@ -1,0 +1,32 @@
+.spellContainer {
+  /* padding-left: 1rem;
+  padding-right: 1rem; */
+  max-width: none;
+
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+  }
+
+  dl {
+    display: flex;
+    flex-wrap: wrap;
+
+    dt {
+      font-family: "Oldenburg", serif;
+      font-size: 1.2rem;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    dd:nth-child(2) {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
