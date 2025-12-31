@@ -5,11 +5,14 @@ export type DDSpell = {
   source: string;
   page: number;
   srd?: string | boolean;
+  srd52?: string | boolean;
+  basicRules2024?: boolean;
   basicRules?: string[] | boolean;
   otherSources?: DDSpellSources[];
   reprintedAs?: string[];
   level: number;
-  classes?: DDClass[] | [];
+  classes?: DDClass[];
+  backgrounds?: string[];
   school: string;
   time: DDSpellCastTime[];
   range: DDSpellRange;
@@ -18,7 +21,7 @@ export type DDSpell = {
   meta?: DDSpellMeta;
   entries: DDSpellEntries[];
   entriesHigherLevel?: DDSpellTypeEntries[];
-  scalingLevelDice?: DDSpellScalingLevelDice;
+  scalingLevelDice?: DDSpellScalingLevelDice[] | DDSpellScalingLevelDice;
   damageInflict?: string[];
   conditionInflict?: string[];
   damageImmune?: string[];
@@ -34,7 +37,12 @@ export type DDSpell = {
   hasFluffImages?: boolean;
 };
 
-type DDClass = {
+export type DDClassTypes = {
+  class?: DDClass[];
+  classVariant?: DDClass[];
+};
+
+export type DDClass = {
   name: string;
   source: string;
   definedInSource?: string;
@@ -42,12 +50,13 @@ type DDClass = {
 
 type DDSpellSources = {
   source: string;
-  page: number;
+  page?: number;
 };
 
 export type DDSpellCastTime = {
   number: number;
   unit: string;
+  condition?: string;
 };
 
 export type DDSpellRange = {
@@ -84,28 +93,29 @@ type DDSpellTypeAmount = {
 };
 
 export type DDSpellEntries =
+  | DDSpellTypeItem
   | DDSpellTypeList
   | DDSpellTypeEntries
   | DDSpellTypeEntriesTable
+  | DDSpellTypeQuote
   | string;
+
+export type DDSpellTypeItem = {
+  type: string;
+  name: string;
+  entries: string[];
+};
 
 export type DDSpellTypeList = {
   type: string;
-  items: string[];
+  style?: string;
+  items: (DDSpellTypeItem | string)[];
 };
 
 export type DDSpellTypeEntries = {
   type: string;
   name: string;
-  entries: (DDSpellTypeList | string)[];
-};
-
-export type DDSpellTypeEntriesTable = {
-  type: string;
-  caption: string;
-  colLabels: string[];
-  colStyles: string[];
-  rows: (DDSpellTypeEntriesCell | string)[][];
+  entries: (DDSpellTypeList | DDSpellTypeEntriesTable | string)[];
 };
 
 export type DDSpellTypeEntriesCell = {
@@ -118,58 +128,28 @@ export type DDSpellTypeEntriesCell = {
   };
 };
 
+export type DDSpellTypeEntriesTable = {
+  type: string;
+  caption?: string;
+  colLabels: string[];
+  colStyles: string[];
+  rows: (DDSpellTypeEntriesCell | string)[][];
+};
+
+export type DDSpellTypeQuote = {
+  type: string;
+  entries: string[];
+  by: string;
+};
+
 type DDSpellScalingLevelDice = {
   label: string;
   scaling: DDSpellScaling;
 };
 
 type DDSpellScaling = {
-  "1": string;
+  "1"?: string;
   "5": string;
   "11": string;
   "17": string;
 };
-
-// export type DDSpell = {
-//   index: string;
-//   name: string;
-//   level: number;
-//   url: string;
-//   detailLoaded: boolean;
-//   desc?: string[];
-//   higher_level?: string[] | [];
-//   range?: string;
-//   components?: string[];
-//   material?: string;
-//   ritual?: boolean;
-//   duration?: string;
-//   concentration?: boolean;
-//   casting_time?: string;
-//   attack_type?: string;
-//   damage?: DDSpellDamage;
-//   dc?: DDSpellDC;
-//   school?: DDSpellTemplate;
-//   classes?: DDSpellTemplate[];
-//   subclasses?: DDSpellTemplate[] | [];
-//   updated_at?: Date;
-// };
-
-// type DDSpellTemplate = {
-//   index: string;
-//   name: string;
-//   url: string;
-// };
-
-// type DDSpellDamage = {
-//   damage_type: DDSpellTemplate;
-//   damage_at_slot_level: DDSpellDamageLevel[];
-// };
-
-// type DDSpellDamageLevel = {
-//   [lvl: number]: string;
-// };
-
-// type DDSpellDC = {
-//   dc_type: DDSpellTemplate;
-//   dc_success: string;
-// };

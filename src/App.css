@@ -24,8 +24,44 @@ body {
   line-height: 1.5;
 }
 
-/* .spells {
-  margin-left: -1rem;
-  margin-right: -1rem;
-  max-width: none;
-} */
+.no-results {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+}
+
+.alert {
+  color: #e7052f;
+}
+
+table {
+  th,
+  td {
+    &.col-1 {
+      width: 10%;
+    }
+
+    &.col-2 {
+      width: 15%;
+    }
+
+    &.text-center {
+      text-align: center;
+    }
+  }
+
+  th {
+    &:not(.text-center) {
+      text-align: left;
+    }
+  }
+
+  td {
+    &.no-wrap {
+      text-wrap: nowrap;
+    }
+  }
+}

@@ -1,10 +1,14 @@
 import SpellEntry from "./SpellEntry";
 import {
   getCastTime,
+  getCastTimeXPHB,
+  getClasses,
   getComponents,
   getDuration,
   getRange,
+  getRangeXPHB,
   getSpellType,
+  getSpellTypeXPHB,
 } from "../../utils/formatSpells";
 import { highlightSearchTerms } from "../../utils/helpers";
 import type { DDSpell } from "../../types";
@@ -16,34 +20,66 @@ type Props = {
 };
 
 export default function Spell({ spell, searchTerm }: Props) {
+  const newStyleSources = ["XPHB", "EFA", "FRHoF"];
+  const spellName = `${highlightSearchTerms(
+    spell.name.normalize("NFD"),
+    searchTerm
+  )}${"PHB" === spell.source ? ` (Legacy)` : ""}`;
+
   return (
-    <div className={`grid-item ${styles.spell}`} data-index={spell.index}>
+    <div
+      className={`grid-item ${styles.spell}`}
+      data-index={spell.index}
+      data-source={spell.source}
+    >
       <div className={styles.spellCard}>
+        {/* TODO: Find a way to not use dangeroruslySetInnerHTML */}
         <dt
           dangerouslySetInnerHTML={{
-            __html: highlightSearchTerms(spell.name, searchTerm),
+            __html: spellName,
           }}
         ></dt>
 
         <dd>
-          <i>{getSpellType(spell.level, spell.school, spell.meta)}</i>
+          <i>
+            {newStyleSources.includes(spell.source)
+              ? getSpellTypeXPHB(spell.level, spell.school, spell.classes!)
+              : getSpellType(
+                  spell.level,
+                  spell.school,
+                  spell.meta,
+                  spell.source
+                )}
+          </i>
+        </dd>
+
+        <dd className={styles.spellCastingTime}>
+          <b>Casting Time:</b>{" "}
+          {newStyleSources.includes(spell.source)
+            ? getCastTimeXPHB(spell.time, spell.meta)
+            : getCastTime(spell.time)}
         </dd>
 
         <dd>
-          <b>Casting Time:</b> {getCastTime(spell.time)}
+          <b>Range:</b>{" "}
+          {newStyleSources.includes(spell.source)
+            ? getRangeXPHB(spell.range)
+            : getRange(spell.range)}
         </dd>
 
-        <dd>
-          <b>Range:</b> {getRange(spell.range)}
-        </dd>
-
-        <dd>
+        <dd className={styles.spellComponents}>
           <b>Components:</b> {getComponents(spell.components)}
         </dd>
 
         <dd>
           <b>Duration:</b> {getDuration(spell.duration)}
         </dd>
+
+        {"LLK" === spell.source && (
+          <dd>
+            <b>Classes: </b> {getClasses(spell.classes!)}
+          </dd>
+        )}
 
         <SpellEntry
           slug={spell.index!}

@@ -1,5 +1,5 @@
 import React from "react";
-import { generateSlug } from "../../utils/helpers";
+import { generateSlug, stringMatch } from "../../utils/helpers";
 import type { DDSpell } from "../../types";
 import styles from "./header.module.css";
 
@@ -18,12 +18,18 @@ export default function Header({
 }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const spellName = e.currentTarget.value;
-    const needle = generateSlug(spellName);
     setSearchTerm(spellName);
 
-    const results = allSpells.filter(
-      (spell) => -1 !== spell.index!.indexOf(needle)
-    );
+    const slug = generateSlug(spellName);
+    const needle = slug.endsWith("-") ? slug.slice(0, -1) : slug;
+    const results = allSpells
+      .filter((spell) => stringMatch(spell.index!, needle))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    const oldresults = allSpells
+      .filter((spell) => -1 !== spell.index!.indexOf(needle))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    console.log(results.length, oldresults.length);
     setFilteredSpells(results);
   };
 

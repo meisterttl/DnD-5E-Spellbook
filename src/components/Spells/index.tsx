@@ -13,7 +13,11 @@ export default function Spells({ spells, searchTerm }: Props) {
       {0 !== spells.length && (
         <dl className="grid">
           {spells.map((spell) => (
-            <Spell key={spell.index} spell={spell} searchTerm={searchTerm} />
+            <Spell
+              key={`${spell.index}-${spell.source.toLowerCase()}`}
+              spell={spell}
+              searchTerm={searchTerm}
+            />
           ))}
         </dl>
       )}

@@ -1,13 +1,15 @@
-import SpellTypeBasic from "./SpellTypeBasic";
-import SpellTypeEntries from "./SpellTypeEntries";
-import SpellTypeList from "./SpellTypeList";
-import SpellTypeTable from "./SpellTypeTable";
+import SpellTypeBasic from "./Types/SpellTypeBasic";
+import SpellTypeEntries from "./Types/SpellTypeEntries";
+import SpellTypeList from "./Types/SpellTypeList";
+import SpellTypeTable from "./Types/SpellTypeTable";
+import SpellTypeQuote from "./Types/SpellTypeQuote";
 import { sanitizeEntry } from "../../utils/helpers";
 import type {
   DDSpellEntries,
-  DDSpellTypeEntries,
   DDSpellTypeList,
+  DDSpellTypeEntries,
   DDSpellTypeEntriesTable,
+  DDSpellTypeQuote,
 } from "../../types";
 import styles from "./spell.module.css";
 
@@ -30,7 +32,7 @@ export default function SpellEntry({
             if ("string" === typeof entry)
               return (
                 <SpellTypeBasic
-                  key={`${slug}-${String(index)}`}
+                  key={`${slug}-string-${String(index)}`}
                   entry={entry}
                 />
               );
@@ -38,38 +40,61 @@ export default function SpellEntry({
             if (entry.type && "entries" === entry.type)
               return (
                 <SpellTypeEntries
-                  key={`${slug}-${String(index)}`}
+                  key={`${slug}-entries-${String(index)}`}
                   entry={entry as DDSpellTypeEntries}
-                  entryKey={`${slug}-${String(index)}`}
+                  entryKey={`${slug}-entries-${String(index)}`}
                 />
               );
 
             if (entry.type && "list" === entry.type)
               return (
                 <SpellTypeList
-                  key={`${slug}-${String(index)}`}
+                  key={`${slug}-list-${String(index)}`}
                   entry={entry as DDSpellTypeList}
+                />
+              );
+
+            if (entry.type && "quote" === entry.type)
+              return (
+                <SpellTypeQuote
+                  key={`${slug}-quote-${String(index)}`}
+                  entry={entry as DDSpellTypeQuote}
+                  entryKey={`${slug}-quote-${String(index)}`}
                 />
               );
 
             if (entry.type && "table" === entry.type)
               return (
                 <SpellTypeTable
-                  key={`${slug}-${String(index)}`}
+                  key={`${slug}-table-${String(index)}`}
                   entry={entry as DDSpellTypeEntriesTable}
                 />
               );
           })}
       </dd>
 
-      {entriesHigherLevel && (
-        <dd>
-          <p>
-            <b>{entriesHigherLevel[0].name}. </b>
-            {sanitizeEntry(entriesHigherLevel[0].entries[0] as string)}
-          </p>
-        </dd>
-      )}
+      {entriesHigherLevel &&
+        entriesHigherLevel.map((entry, index) => (
+          <dd key={`${slug}-high-level-${String(index)}`}>
+            {entry.entries.map((subEntry, subIndex) => {
+              if ("string" === typeof subEntry)
+                return (
+                  <p key={`${slug}-high-level-string-${String(subIndex)}`}>
+                    {0 === subIndex && <b>{entry.name}. </b>}
+                    {sanitizeEntry(subEntry as string)}
+                  </p>
+                );
+
+              if (subEntry.type && "table" === subEntry.type)
+                return (
+                  <SpellTypeTable
+                    key={`${slug}-high-level-table-${String(subIndex)}`}
+                    entry={subEntry as DDSpellTypeEntriesTable}
+                  />
+                );
+            })}
+          </dd>
+        ))}
     </div>
   );
 }

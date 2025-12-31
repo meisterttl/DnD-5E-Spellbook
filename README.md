@@ -8,7 +8,7 @@ All credits go to 5etools (https://5e.tools/) since I used their JSON files to l
 
 - Load PHB spells and their details ✅
 - Quick Search function ✅
-- Add more spells from other sources
+- Add more spells from other sources ✅
 - Add Filter function
 - Add Sort function
 - Add Memorize/Prepare Spell function

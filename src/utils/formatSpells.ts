@@ -1,5 +1,6 @@
-import * as helpers from "./helpers";
+import { capitalize, pastTense, sanitizeEntry, twoDigits } from "./helpers";
 import type {
+  DDClass,
   DDSpellCastTime,
   DDSpellComponents,
   DDSpellDuration,
@@ -11,11 +12,60 @@ export const getCastTime = (time: DDSpellCastTime[]) => {
   const newTime = time.map((each) => {
     const castTimeSuffix =
       "bonus" === each.unit.toLowerCase() ? "bonus action" : each.unit;
+    const condition = each.condition
+      ? `, ${sanitizeEntry(each.condition)}`
+      : ``;
 
-    return `${each.number} ${castTimeSuffix}`;
+    return `${each.number} ${
+      1 === each.number ? castTimeSuffix : `${castTimeSuffix}s`
+    }${condition}`;
   });
 
   return newTime.join(" or ");
+};
+
+export const getCastTimeXPHB = (
+  time: DDSpellCastTime[],
+  meta: { ritual: boolean } | undefined
+) => {
+  const isRitual = meta && meta.ritual ? " or Ritual" : "";
+
+  const newTime = time.map((each) => {
+    const condition = each.condition
+      ? `, ${sanitizeEntry(each.condition)}`
+      : ``;
+    let output = "";
+
+    switch (each.unit) {
+      case "bonus":
+        output = "Bonus Action";
+        break;
+      case "action":
+      case "reaction":
+        output = capitalize(each.unit);
+        break;
+      default:
+        output = `${each.number} ${
+          1 === each.number ? each.unit : ` ${capitalize(each.unit)}s`
+        }`;
+        break;
+    }
+
+    return `${output}${condition}`;
+  });
+
+  return `${newTime.join()}${isRitual}`;
+};
+
+export const getClasses = (classes: DDClass[]) => {
+  const list = classes
+    .map((each) => each.name)
+    .filter((value, index, array) => array.indexOf(value) === index)
+    .sort();
+
+  return list
+    .map((name, index) => (0 !== index ? name.toLowerCase() : name))
+    .join(", ");
 };
 
 export const getComponents = (components: DDSpellComponents) => {
@@ -49,10 +99,10 @@ export const getDuration = (durationArray: DDSpellDuration[]) => {
       }`;
     case "permanent":
       return `Until ${duration
-        .ends!.map((trigger) => helpers.pastTense(trigger))
+        .ends!.map((trigger) => pastTense(trigger))
         .join(" or ")}`;
     default:
-      break;
+      return capitalize(duration.type);
   }
 };
 
@@ -97,7 +147,9 @@ export const getRange = (range: DDSpellRange) => {
     case "point":
       return range.distance!.amount
         ? `${range.distance!.amount} ${range.distance!.type}`
-        : helpers.capitalize(range.distance!.type);
+        : capitalize(range.distance!.type);
+    case "emanation":
+      return "Self";
     case "cone":
     case "cube":
     case "line":
@@ -107,22 +159,67 @@ export const getRange = (range: DDSpellRange) => {
     case "sphere":
       return `Self (${range.distance!.amount}-foot-radius ${range.type})`;
     default:
-      return helpers.capitalize(range.type);
+      return capitalize(range.type);
+  }
+};
+
+export const getRangeXPHB = (range: DDSpellRange) => {
+  switch (range.type.toLowerCase()) {
+    case "point":
+      return range.distance!.amount
+        ? `${range.distance!.amount} ${range.distance!.type}`
+        : capitalize(range.distance!.type);
+    case "cone":
+    case "cube":
+    case "emanation":
+    case "line":
+    case "hemisphere":
+    case "radius":
+      return "Self";
+    default:
+      return capitalize(range.type);
   }
 };
 
 export const getSpellType = (
   level: number,
   school: string,
-  meta: { ritual: boolean } | undefined
+  meta: { ritual: boolean } | undefined,
+  source: string = "PHB"
 ) => {
+  const altStyleSource = ["BMT", "FTD", "SCC", "AAG", "SatO"];
   const isRitual = meta && meta.ritual ? " (ritual)" : "";
   const levelSuffix = getLevelSuffix(level);
-  const spellSchool = getSchool(school.toLowerCase())!;
+  const wordLevel = altStyleSource.includes(source) ? "Level" : "level";
+  const spellSchool = altStyleSource.includes(source)
+    ? capitalize(getSchool(school)!)
+    : getSchool(school)!;
 
   return 0 === level
-    ? `${helpers.capitalize(spellSchool!)} cantrip`
-    : `${level}${levelSuffix}-level ${spellSchool}${isRitual}`;
+    ? `${capitalize(spellSchool!)} cantrip`
+    : `${level}${levelSuffix}-${wordLevel} ${spellSchool}${isRitual}`;
+};
+
+export const getSpellTypeXPHB = (
+  level: number,
+  school: string,
+  classes: DDClass[]
+) => {
+  const spellSchool = getSchool(school.toLowerCase())!;
+  const spellClasses = `(${classes
+    .map((each) =>
+      "XPHB" === each.source || "EFA" === each.source || "FRHoF" === each.source
+        ? each.name
+        : undefined
+    )
+    .filter((each) => each)
+    .join(", ")})`;
+  const output =
+    0 === level
+      ? `${capitalize(spellSchool!)} Cantrip`
+      : `Level ${level} ${capitalize(spellSchool!)}`;
+
+  return `${output} ${spellClasses}`;
 };
 
 export const getSpellTableCell = (obj: DDSpellTypeEntriesCell) => {
@@ -131,9 +228,7 @@ export const getSpellTableCell = (obj: DDSpellTypeEntriesCell) => {
       return String(obj.roll.exact);
     case "min" in obj.roll && "max" in obj.roll:
       return "pad" in obj.roll
-        ? `${helpers.twoDigits(obj.roll.min!)}-${helpers.twoDigits(
-            obj.roll.max!
-          )}`
+        ? `${twoDigits(obj.roll.min!)}-${twoDigits(obj.roll.max!)}`
         : `${obj.roll.min!}-${obj.roll.max!}`;
     default:
       return;
