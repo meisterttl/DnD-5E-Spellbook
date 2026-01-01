@@ -16,6 +16,16 @@
 .spellSearchForm {
   display: flex;
   flex-wrap: wrap;
+}
+
+.searchContainer,
+.filterContainer {
+  flex-basis: 100%;
+}
+
+.searchContainer {
+  display: flex;
+  flex-wrap: wrap;
 
   label {
     margin-bottom: 0.5rem;
@@ -35,5 +45,151 @@
     &:hover {
       cursor: pointer;
     }
+  }
+}
+
+.checkboxContainer {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+
+    position: relative;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  input[type="checkbox"] {
+    width: 0;
+    opacity: 0;
+
+    &:checked {
+      + label {
+        &:after {
+          opacity: 1;
+        }
+      }
+    }
+
+    + label {
+      &:before {
+        display: inline-block;
+        margin-right: 0.75rem;
+        padding: 0.75rem;
+
+        border: 1px solid black;
+        content: "";
+      }
+
+      &:after {
+        position: absolute;
+        top: 0.625rem;
+        left: 0.3125rem;
+        width: 1rem;
+        height: 1rem;
+        background-color: black;
+        content: "";
+        opacity: 0;
+        transition: opacity 0.05s;
+      }
+    }
+  }
+}
+
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  fieldset {
+    flex-basis: 100%;
+  }
+}
+
+.filterCollapsible {
+  flex-basis: 100%;
+  margin-bottom: 1rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-top: 0.1875rem;
+    padding-bottom: 0.1875rem;
+    position: relative;
+    width: 100%;
+
+    border: none;
+    background-color: transparent;
+    overflow: hidden;
+    fill: none;
+    stroke: black;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1px;
+
+    svg {
+      background-color: white;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &[aria-expanded="true"] {
+      svg {
+        transform: rotate(180deg);
+      }
+
+      ~ .filterCollapsibleContent {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  span {
+    padding-right: 0.625rem;
+
+    background-color: white;
+
+    &:after {
+      width: 100%;
+
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: -1;
+
+      border-top: 1px solid #ccc9c9;
+      content: "";
+    }
+  }
+}
+
+.filterCollapsibleContent {
+  display: none;
+  margin-top: 1rem;
+}
+
+.filterSelectContainer {
+  margin-bottom: 1rem;
+
+  label {
+    margin-right: 0.5rem;
   }
 }

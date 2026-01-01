@@ -18,8 +18,9 @@ import LLK from "./data/spells/spells-llk.json";
 import SatO from "./data/spells/spells-sato.json";
 import TDCSR from "./data/spells/spells-tdcsr.json";
 import isUpdated from "./utils/errata";
-import type { DDClass, DDSpell, DDClassTypes } from "./types";
+import type { DDSpell, DDClassTypes } from "./types";
 
+// v2.22.0
 const DDData = {
   PHB: { spell: PHB.spell, classes: Sources.PHB }, // Player's Handbook [2014] (361) ✓?
   XPHB: { spell: XPHB.spell, classes: Sources.XPHB }, // Player's Handbook [2024] (391) ✓?
@@ -27,7 +28,7 @@ const DDData = {
   TCE: { spell: TCE.spell, classes: Sources.TCE }, // Tasha's Cauldron of Everything  (21) ✓
   FTD: { spell: FTD.spell, classes: Sources.FTD }, // Fizban's Treasury of Dragons (7) ✓
   BMT: { spell: BMT.spell, classes: Sources.BMT }, // The Book of Many Things (3) ✓
-  FRHoF: { spell: FRHoF.spell, classes: Sources.FRHoF }, // Forgotten Realms: Heroes of Faerun (19) ✓
+  FRHoF: { spell: FRHoF.spell, classes: Sources.FRHoF }, // Forgotten Realms: Heroes of Faerûn (19) ✓
   EFA: { spell: EFA.spell, classes: Sources.EFA }, // Eberron: Forge of the Artificer (1) ✓
   GGR: { spell: GGR.spell, classes: null }, // Guildmasters' Guide to Ravnica (1) ✓
   AI: { spell: AI.spell, classes: Sources.AI }, // Acquisitions Incorporated (7) ✓
@@ -51,31 +52,50 @@ for (const source in DDData) {
     const sClasses = classData
       ? (classData![spell.name as keyof typeof classData] as DDClassTypes)
       : null;
-    const classArray: DDClass[] = [];
 
-    // Index property should not exist yet but check anyway
-    if (!("index" in spell)) {
-      // For creating keys for each spell
-      spell.index = spell.name
+    const spellModified: DDSpell = {
+      name: spell.name,
+      index: spell.name
         .toLowerCase()
         .replace(/[\s/]/g, "-") // Empty space and Forward slash
-        .replace(/\u0027/g, ""); // Apostrophe
+        .replace(/\u0027/g, ""), // Apostrophe
+      source: spell.source,
+      page: spell.page,
+      level: spell.level,
+      classes: [],
+      school: spell.school,
+      time: spell.time,
+      range: spell.range,
+      components: spell.components,
+      duration: spell.duration,
+      entries: spell.entries,
+    };
+
+    if ("otherSources" in spell) {
+      spellModified.otherSources = spell.otherSources;
+    }
+
+    if ("meta" in spell) {
+      spellModified.meta = spell.meta;
+    }
+
+    if ("entriesHigherLevel" in spell) {
+      spellModified.entriesHigherLevel = spell.entriesHigherLevel;
+    }
+
+    if ("scalingLevelDice" in spell) {
+      spellModified.scalingLevelDice = spell.scalingLevelDice;
     }
 
     if (sClasses && "class" in sClasses) {
-      classArray.push(...sClasses.class!);
+      spellModified.classes!.push(...sClasses.class!);
     }
 
     if (sClasses && "classVariant" in sClasses) {
-      classArray.push(...sClasses.classVariant!);
+      spellModified.classes!.push(...sClasses.classVariant!);
     }
 
-    // Classes property should not exist yet but check anyway
-    if (!("classes" in spell)) {
-      spell.classes = [...classArray];
-    }
-
-    return isUpdated(spell);
+    return isUpdated(spellModified);
   });
 
   DDSpells.push(...newSpellData);

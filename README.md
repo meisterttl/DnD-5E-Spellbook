@@ -1,8 +1,8 @@
 # D&D 5E Spellbooks
 
-A Simple website to look up spells quickly.
+A Simple tool to look up spells quickly.
 
-All credits go to 5etools (https://5e.tools/) since I used their JSON files to load all spell information.
+All credits go to 5etools (https://5e.tools/) since their JSON files were used to load all spells.
 
 ## Checklist
 

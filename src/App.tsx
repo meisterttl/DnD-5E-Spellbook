@@ -3,14 +3,20 @@ import allSpells from "./data";
 import Header from "./components/Header";
 import Spells from "./components/Spells";
 import Masonry from "masonry-layout";
+import type { DDSpell } from "./types";
 import "normalize.css";
 import "./App.css";
 
 function App() {
-  const [filteredSpells, setFilteredSpells] = useState(allSpells);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [activeSources, setActiveSources] = useState<string[]>(["phb"]);
+  const spells = allSpells.filter((spell) =>
+    activeSources.includes(spell.source.toLowerCase())
+  );
+
+  const [filteredSpells, setFilteredSpells] = useState<DDSpell[]>(spells);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const msnry = useRef<Masonry>(null);
-  const noResult = useRef(true);
+  const noResult = useRef<boolean>(true);
 
   useEffect(() => {
     if (0 !== filteredSpells.length && noResult.current) {
@@ -34,16 +40,25 @@ function App() {
     <>
       <Header
         allSpells={allSpells}
+        activeSources={activeSources}
+        setActiveSources={setActiveSources}
         setFilteredSpells={setFilteredSpells}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
 
+      <div className="status">
+        {filteredSpells.length} of {allSpells.length} Spells
+      </div>
+
       {0 === filteredSpells.length && (
         <div className="no-results">
-          <p className="lead alert">No match: {searchTerm}</p>
+          <p className="lead alert">
+            No spells found {!!searchTerm && `(Search term: ${searchTerm})`}
+          </p>
         </div>
       )}
+
       {0 !== filteredSpells.length && (
         <Spells spells={filteredSpells} searchTerm={searchTerm} />
       )}

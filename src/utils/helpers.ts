@@ -7,7 +7,7 @@ export const generateSlug = (word: string) =>
 // TODO: Find a way to highlight accented characters
 export const highlightSearchTerms = (word: string, needle: string) => {
   // const wordInUnicode = word.split("").map((each) => each.charCodeAt(0).toString(16).padStart(4, "0"));
-  const regex = new RegExp(String.raw`(${needle.split("").join("\\")})`, "gi");
+  const regex = new RegExp(String.raw`(${needle})`, "gi");
 
   return "" === needle ? word : word.replace(regex, `<mark>$1</mark>`);
 };

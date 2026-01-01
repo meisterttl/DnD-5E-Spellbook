@@ -24,6 +24,14 @@ body {
   line-height: 1.5;
 }
 
+.status {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  text-align: right;
+}
+
 .no-results {
   padding-left: 1rem;
   padding-right: 1rem;
