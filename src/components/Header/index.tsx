@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Filters from "./Filters";
+import Select from "./Form/Select";
+import Steps from "./Form/Steps";
 import { generateSlug, stringMatch } from "../../utils/helpers";
 import type { DDSpell } from "../../types";
 import styles from "./header.module.css";
+
+const spellClasses = [
+  "Artificer",
+  "Bard",
+  "Cleric",
+  "Druid",
+  "Monk",
+  "Paladin",
+  "Ranger",
+  "Sorcerer",
+  "Warlock",
+  "Wizard",
+];
+
+const spellSchools = [
+  "Abjuration",
+  "Conjuration",
+  "Divination",
+  "Enchantment",
+  "Evocation",
+  "Illusion",
+  "Necromancy",
+  "Transmutation",
+];
 
 type Props = {
   allSpells: DDSpell[];
@@ -21,16 +47,44 @@ export default function Header({
   searchTerm,
   setSearchTerm,
 }: Props) {
+  const [activeClass, setActiveClass] = useState<string>("");
+  const [activeSchool, setActiveSchool] = useState<string>("");
+  const [activeLevel, setActiveLevel] = useState<number>(-1);
+
+  const filterSpells = useCallback(
+    (name: string) => {
+      const slug = generateSlug(name);
+      const needle = slug.endsWith("-") ? slug.slice(0, -1) : slug;
+      const results = allSpells
+        .filter((spell) => activeSources.includes(spell.source.toLowerCase()))
+        .filter((spell) =>
+          "" !== activeClass
+            ? spell.classes!.find(
+                (type) => activeClass === type.name.toLowerCase()
+              )
+            : true
+        )
+        .filter((spell) =>
+          "" !== activeSchool
+            ? activeSchool === spell.school.toLowerCase()
+            : true
+        )
+        .filter((spell) =>
+          -1 !== activeLevel ? activeLevel === spell.level : true
+        )
+        .filter((spell) => stringMatch(spell.index!, needle))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      return results;
+    },
+    [activeClass, activeLevel, activeSchool, activeSources, allSpells]
+  );
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const spellName = e.currentTarget.value;
     setSearchTerm(spellName);
 
-    const slug = generateSlug(spellName);
-    const needle = slug.endsWith("-") ? slug.slice(0, -1) : slug;
-    const results = allSpells
-      .filter((spell) => activeSources.includes(spell.source.toLowerCase()))
-      .filter((spell) => stringMatch(spell.index!, needle))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const results = filterSpells(spellName);
     setFilteredSpells(results);
   };
 
@@ -39,6 +93,11 @@ export default function Header({
 
     setSearchTerm("");
   };
+
+  useEffect(() => {
+    const results = filterSpells(searchTerm);
+    setFilteredSpells(results);
+  }, [filterSpells, searchTerm, setFilteredSpells]);
 
   return (
     <header className={styles.header}>
@@ -53,24 +112,30 @@ export default function Header({
             setFilteredSpells={setFilteredSpells}
           />
 
-          <div className={styles.filterSelectContainer}>
-            <label htmlFor="classes">Filter by Class</label>
-            <select id="classes">
-              <option value="" selected disabled>
-                Select a class
-              </option>
-              <option value="artificer">Artificer</option>
-              <option value="bard">Bard</option>
-              <option value="cleric">Cleric</option>
-              <option value="druid">Druid</option>
-              <option value="monk">Monk</option>
-              <option value="paladin">Paladin</option>
-              <option value="ranger">Ranger</option>
-              <option value="sorcerer">Sorcerer</option>
-              <option value="warlock">Warlock</option>
-              <option value="wizard">Wizard</option>
-            </select>
-          </div>
+          <Select
+            selectOptions={spellClasses}
+            id="classes"
+            label="Class"
+            activeClass={activeClass}
+            setter={setActiveClass}
+          />
+
+          <Select
+            selectOptions={spellSchools}
+            id="schools"
+            label="School"
+            activeClass={activeSchool}
+            setter={setActiveSchool}
+          />
+
+          <Steps
+            id="level"
+            label="Spell Level"
+            min={0}
+            max={9}
+            activeLevel={activeLevel}
+            setActiveLevel={setActiveLevel}
+          />
 
           <div className={styles.searchContainer}>
             <label htmlFor="spell">Search spells by name</label>

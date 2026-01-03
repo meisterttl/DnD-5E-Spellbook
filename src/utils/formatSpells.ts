@@ -192,8 +192,8 @@ export const getSpellType = (
   const levelSuffix = getLevelSuffix(level);
   const wordLevel = altStyleSource.includes(source) ? "Level" : "level";
   const spellSchool = altStyleSource.includes(source)
-    ? capitalize(getSchool(school)!)
-    : getSchool(school)!;
+    ? capitalize(school)
+    : school;
 
   return 0 === level
     ? `${capitalize(spellSchool!)} cantrip`
@@ -205,7 +205,7 @@ export const getSpellTypeXPHB = (
   school: string,
   classes: DDClass[]
 ) => {
-  const spellSchool = getSchool(school.toLowerCase())!;
+  const spellSchool = school.toLowerCase();
   const spellClasses = `(${classes
     .map((each) =>
       "XPHB" === each.source || "EFA" === each.source || "FRHoF" === each.source

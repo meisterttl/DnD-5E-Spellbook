@@ -97,7 +97,7 @@ export default function Filters({
           aria-controls="collapsibleContent"
           onClick={handleCollapse}
         >
-          <span>More Filter Options</span>
+          <span>More Sources</span>
           <svg role="img" width="30" height="30" alt="Toggle Content">
             <use href="#chevron" xlinkHref="#chevron"></use>
           </svg>

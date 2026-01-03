@@ -153,3 +153,10 @@ type DDSpellScaling = {
   "11": string;
   "17": string;
 };
+
+export type DDFilter = {
+  sources: string[];
+  classType: string;
+  school: string;
+  level: number;
+};

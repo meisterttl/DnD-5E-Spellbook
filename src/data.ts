@@ -18,6 +18,8 @@ import LLK from "./data/spells/spells-llk.json";
 import SatO from "./data/spells/spells-sato.json";
 import TDCSR from "./data/spells/spells-tdcsr.json";
 import isUpdated from "./utils/errata";
+import { getSchool } from "./utils/formatSpells";
+import { capitalize } from "./utils/helpers";
 import type { DDSpell, DDClassTypes } from "./types";
 
 // v2.22.0
@@ -63,7 +65,7 @@ for (const source in DDData) {
       page: spell.page,
       level: spell.level,
       classes: [],
-      school: spell.school,
+      school: capitalize(getSchool(spell.school)!),
       time: spell.time,
       range: spell.range,
       components: spell.components,

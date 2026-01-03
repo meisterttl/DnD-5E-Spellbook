@@ -9,9 +9,10 @@ import "./App.css";
 
 function App() {
   const [activeSources, setActiveSources] = useState<string[]>(["phb"]);
-  const spells = allSpells.filter((spell) =>
-    activeSources.includes(spell.source.toLowerCase())
-  );
+  const [sortBy, setSortBy] = useState<string>("name");
+  const spells = allSpells
+    .filter((spell) => activeSources.includes(spell.source.toLowerCase()))
+    .sort((a, b) => a[sortBy as "name"].localeCompare(b[sortBy as "name"]));
 
   const [filteredSpells, setFilteredSpells] = useState<DDSpell[]>(spells);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -26,6 +27,7 @@ function App() {
         itemSelector: ".grid-item",
         percentPosition: true,
       });
+      msnry.current!.layout!();
 
       noResult.current = false;
     }
@@ -48,7 +50,19 @@ function App() {
       />
 
       <div className="status">
-        {filteredSpells.length} of {allSpells.length} Spells
+        <div className="sort-container">
+          <label htmlFor="sort">Sort by</label>
+
+          <select id="sort" value={sortBy}>
+            <option value="name">Name</option>
+            <option value="school">School</option>
+            <option value="level">Level</option>
+          </select>
+        </div>
+
+        <div className="spell-counter">
+          {filteredSpells.length} of {allSpells.length} Spells
+        </div>
       </div>
 
       {0 === filteredSpells.length && (

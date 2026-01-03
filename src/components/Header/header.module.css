@@ -19,7 +19,8 @@
 }
 
 .searchContainer,
-.filterContainer {
+.filterContainer,
+.filterSelectContainer {
   flex-basis: 100%;
 }
 
@@ -187,6 +188,7 @@
 }
 
 .filterSelectContainer {
+  display: flex;
   margin-bottom: 1rem;
 
   label {
