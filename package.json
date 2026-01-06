@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.90.12",
     "masonry-layout": "^4.2.2",
     "normalize.css": "^8.0.1",
     "react": "^19.2.0",

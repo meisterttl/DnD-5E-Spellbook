@@ -203,16 +203,21 @@ export const getSpellType = (
 export const getSpellTypeXPHB = (
   level: number,
   school: string,
-  classes: DDClass[]
+  classes: DDClass[],
+  source: string
 ) => {
   const spellSchool = school.toLowerCase();
   const spellClasses = `(${classes
     .map((each) =>
-      "XPHB" === each.source || "EFA" === each.source || "FRHoF" === each.source
+      ("XPHB" === each.source ||
+        "EFA" === each.source ||
+        "FRHoF" === each.source) &&
+      source === each.source
         ? each.name
         : undefined
     )
     .filter((each) => each)
+    .sort()
     .join(", ")})`;
   const output =
     0 === level

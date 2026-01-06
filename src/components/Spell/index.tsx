@@ -11,15 +11,24 @@ import {
   getSpellTypeXPHB,
 } from "../../utils/formatSpells";
 import { highlightSearchTerms } from "../../utils/helpers";
+import Masonry from "masonry-layout";
+import type { RefObject } from "react";
 import type { DDSpell } from "../../types";
 import styles from "./spell.module.css";
 
 type Props = {
+  descriptionToggled: boolean;
   spell: DDSpell;
   searchTerm: string;
+  msnry: RefObject<Masonry | null>;
 };
 
-export default function Spell({ spell, searchTerm }: Props) {
+export default function Spell({
+  descriptionToggled,
+  spell,
+  searchTerm,
+  msnry,
+}: Props) {
   const newStyleSources = ["XPHB", "EFA", "FRHoF"];
   const spellName = `${highlightSearchTerms(
     spell.name.normalize("NFD"),
@@ -43,7 +52,12 @@ export default function Spell({ spell, searchTerm }: Props) {
         <dd>
           <i>
             {newStyleSources.includes(spell.source)
-              ? getSpellTypeXPHB(spell.level, spell.school, spell.classes!)
+              ? getSpellTypeXPHB(
+                  spell.level,
+                  spell.school,
+                  spell.classes!,
+                  spell.source
+                )
               : getSpellType(
                   spell.level,
                   spell.school,
@@ -85,6 +99,8 @@ export default function Spell({ spell, searchTerm }: Props) {
           slug={spell.index!}
           entries={spell.entries}
           entriesHigherLevel={spell.entriesHigherLevel}
+          msnry={msnry}
+          descriptionToggled={descriptionToggled}
         />
       </div>
     </div>

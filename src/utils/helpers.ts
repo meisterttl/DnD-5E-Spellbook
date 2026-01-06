@@ -12,6 +12,20 @@ export const highlightSearchTerms = (word: string, needle: string) => {
   return "" === needle ? word : word.replace(regex, `<mark>$1</mark>`);
 };
 
+export const loadFilters = (name: string) => {
+  switch (name) {
+    case "spellSources":
+      return localStorage.getItem(name)
+        ? localStorage.getItem(name)!.split(",")
+        : ["phb"];
+    default:
+      return;
+  }
+};
+
+export const saveFilters = (name: string, value: string) =>
+  localStorage.setItem(name, value);
+
 // Needed only to change "dispel" and "trigger" for now
 export const pastTense = (word: string) => {
   switch (true) {

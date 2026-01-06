@@ -24,9 +24,7 @@ export default function Select({
       <label htmlFor={id}>Filter by {label}</label>
 
       <select id={id} value={activeClass} onChange={handleSelect}>
-        <option value="" disabled>
-          {label}
-        </option>
+        <option value="">---</option>
 
         {selectOptions.map((option) => (
           <option key={option.toLowerCase()} value={option.toLowerCase()}>

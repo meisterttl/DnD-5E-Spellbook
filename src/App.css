@@ -24,14 +24,6 @@ body {
   line-height: 1.5;
 }
 
-.status {
-  margin-bottom: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-
-  text-align: right;
-}
-
 .no-results {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -43,6 +35,19 @@ body {
 
 .alert {
   color: #e7052f;
+}
+
+.hidden {
+  height: 1px;
+  width: 1px;
+
+  position: absolute !important;
+  top: 1em;
+  left: 1em;
+  overflow: hidden;
+
+  clip: rect(1px, 1px, 1px, 1px);
+  font-size: 80%;
 }
 
 table {

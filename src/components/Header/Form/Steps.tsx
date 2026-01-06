@@ -44,7 +44,7 @@ export default function Steps({
     <div className={styles.filterSelectContainer}>
       <label htmlFor="stepper">Filter by {label}</label>
 
-      <div className="stepper">
+      <div className={styles.stepper}>
         <button
           className="button minus"
           disabled={0 === activeLevel}
@@ -64,9 +64,7 @@ export default function Steps({
           value={String(activeLevel)}
           onChange={handleSelect}
         >
-          <option value="-1" disabled>
-            {`${label}`}
-          </option>
+          <option value="-1">---</option>
 
           {Array.from({ length: max + 1 }, (_, i) => (
             <option key={`level${i}`} value={String(i)}>
