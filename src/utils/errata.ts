@@ -145,7 +145,7 @@ const isUpdated = (spell: DDSpell) => {
     if ("backgrounds" in errata[spellName])
       spell.backgrounds = [...errata[spellName].backgrounds!];
     if ("classes" in errata[spellName])
-      spell.classes = [...errata[spellName].classes!];
+      spell.classes!.push(...errata[spellName].classes!);
     if ("duration" in errata[spellName])
       spell.duration = errata[spellName].duration!;
   }

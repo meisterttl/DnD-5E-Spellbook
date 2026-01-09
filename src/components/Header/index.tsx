@@ -9,8 +9,7 @@ import styles from "./header.module.css";
 
 type Props = {
   allSpells: DDSpell[];
-  activeSources: string[];
-  setActiveSources: React.Dispatch<React.SetStateAction<string[]>>;
+  initialFilters: string[];
   filteredSpells: DDSpell[];
   setFilteredSpells: React.Dispatch<React.SetStateAction<DDSpell[]>>;
   searchTerm: string;
@@ -21,13 +20,13 @@ type sortKey = "name" | "school";
 
 export default function Header({
   allSpells,
-  activeSources,
-  setActiveSources,
+  initialFilters,
   filteredSpells,
   setFilteredSpells,
   searchTerm,
   setSearchTerm,
 }: Props) {
+  const [activeSources, setActiveSources] = useState<string[]>(initialFilters!);
   const [activeClass, setActiveClass] = useState<string>("");
   const [activeSchool, setActiveSchool] = useState<string>("");
   const [activeLevel, setActiveLevel] = useState<number>(-1);

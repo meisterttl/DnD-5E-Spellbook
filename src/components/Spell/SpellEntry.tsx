@@ -1,3 +1,4 @@
+// import React from "react";
 import SpellTypeBasic from "./Types/SpellTypeBasic";
 import SpellTypeEntries from "./Types/SpellTypeEntries";
 import SpellTypeList from "./Types/SpellTypeList";
@@ -16,7 +17,6 @@ import type {
 import styles from "./spell.module.css";
 
 type Props = {
-  descriptionToggled: boolean;
   slug: string;
   entries: DDSpellEntries[];
   entriesHigherLevel: DDSpellTypeEntries[] | undefined;
@@ -24,7 +24,6 @@ type Props = {
 };
 
 export default function SpellEntry({
-  descriptionToggled,
   slug,
   entries,
   entriesHigherLevel,
@@ -37,7 +36,7 @@ export default function SpellEntry({
   return (
     <div className={styles.spellEntries}>
       <dd>
-        <details onToggle={handleToggle} open={descriptionToggled}>
+        <details onToggle={handleToggle}>
           <summary>Spell Description</summary>
 
           {entries &&

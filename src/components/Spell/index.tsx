@@ -17,18 +17,12 @@ import type { DDSpell } from "../../types";
 import styles from "./spell.module.css";
 
 type Props = {
-  descriptionToggled: boolean;
   spell: DDSpell;
   searchTerm: string;
   msnry: RefObject<Masonry | null>;
 };
 
-export default function Spell({
-  descriptionToggled,
-  spell,
-  searchTerm,
-  msnry,
-}: Props) {
+export default function Spell({ spell, searchTerm, msnry }: Props) {
   const newStyleSources = ["XPHB", "EFA", "FRHoF"];
   const spellName = `${highlightSearchTerms(
     spell.name.normalize("NFD"),
@@ -100,7 +94,6 @@ export default function Spell({
           entries={spell.entries}
           entriesHigherLevel={spell.entriesHigherLevel}
           msnry={msnry}
-          descriptionToggled={descriptionToggled}
         />
       </div>
     </div>

@@ -71,6 +71,7 @@ for (const source in DDData) {
       components: spell.components,
       duration: spell.duration,
       entries: spell.entries,
+      isPrepared: false,
     };
 
     if ("otherSources" in spell) {

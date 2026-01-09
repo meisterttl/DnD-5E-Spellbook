@@ -35,6 +35,7 @@ export type DDSpell = {
   miscTags?: string[];
   areaTags?: string[];
   hasFluffImages?: boolean;
+  isPrepared?: boolean;
 };
 
 export type DDClassTypes = {
