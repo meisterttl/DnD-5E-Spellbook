@@ -1,45 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import Spell from "../Spell";
+import Collapsible from "../Collapsible";
 import Masonry from "masonry-layout";
 import type { DDSpell } from "../../types";
 import styles from "./spells.module.css";
 
 type Props = {
   filteredSpells: DDSpell[];
-  setFilteredSpells: React.Dispatch<React.SetStateAction<DDSpell[]>>;
   searchTerm: string;
   children: React.ReactNode;
 };
 
-export default function Spells({
+type GridProps = {
+  filteredSpells: DDSpell[];
+  preparedSpells: DDSpell[];
+  setPreparedSpells: React.Dispatch<React.SetStateAction<DDSpell[]>>;
+  searchTerm: string;
+};
+
+type GridAltProps = {
+  preparedSpells: DDSpell[];
+  setPreparedSpells: React.Dispatch<React.SetStateAction<DDSpell[]>>;
+  searchTerm: string;
+};
+
+function GridAllSpells({
   filteredSpells,
-  setFilteredSpells,
+  preparedSpells,
+  setPreparedSpells,
   searchTerm,
-  children,
-}: Props) {
-  // const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
-  // @ts-expect-error: Ignore for now
-  const [preparedSpells, setPreparedSpells] = useState<DDSpell[]>([]);
+}: GridProps) {
   const noResult = useRef<boolean>(true);
   const msnry = useRef<Masonry>(null);
-
-  const handlePrepare = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const key = e.currentTarget.dataset.key!.split("-");
-    const spellSource: string = key.shift()!;
-    const spellIndex: string = key.join("-");
-
-    const newSpells = filteredSpells.map((spell: DDSpell) =>
-      spell.index === spellIndex && spell.source.toLowerCase() === spellSource
-        ? {
-            ...spell,
-            isPrepared: !spell.isPrepared,
-          }
-        : spell
-    );
-    setFilteredSpells(newSpells);
-  };
 
   useEffect(() => {
     // Needs to re-initialize Masonry layout when there are 0 spells visible on the screen
@@ -63,6 +55,134 @@ export default function Spells({
   }, [filteredSpells, msnry]);
 
   return (
+    <dl className="grid">
+      {0 !== filteredSpells.length &&
+        filteredSpells.map((spell) => {
+          const isPrepared =
+            0 !== preparedSpells.length && preparedSpells.includes(spell);
+
+          return (
+            <Spell
+              key={`${spell.source.toLowerCase()}-${spell.index}`}
+              searchTerm={searchTerm}
+              preparedSpells={preparedSpells}
+              isPrepared={isPrepared}
+              spell={spell}
+              msnry={msnry}
+            >
+              <button
+                onClick={() => {
+                  const newSpells = !isPrepared
+                    ? [...preparedSpells, spell]
+                    : preparedSpells.filter((prepared) => spell !== prepared);
+
+                  setPreparedSpells(newSpells);
+                }}
+                aria-label={`${!isPrepared ? "Prepare" : "Remove"} ${
+                  spell.name
+                }`}
+                aria-checked={isPrepared}
+              >
+                {!isPrepared ? "Prepare" : "Remove"}
+              </button>
+            </Spell>
+          );
+        })}
+    </dl>
+  );
+}
+
+function GridPreparedSpells({
+  preparedSpells,
+  setPreparedSpells,
+  searchTerm,
+}: GridAltProps) {
+  const noResult = useRef<boolean>(true);
+  const msnry = useRef<Masonry>(null);
+
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const isVisible = e.currentTarget.ariaExpanded;
+    e.currentTarget.ariaExpanded =
+      "true" === isVisible ? String(!isVisible) : String(!!isVisible);
+
+    if (0 !== preparedSpells.length) {
+      msnry.current!.layout!();
+    }
+  };
+
+  useEffect(() => {
+    if (0 !== preparedSpells.length && noResult.current) {
+      const gridElem = document.querySelector(".alt-grid")!;
+
+      msnry.current = new Masonry(gridElem, {
+        itemSelector: ".grid-item",
+        percentPosition: true,
+      });
+      msnry.current!.layout!();
+
+      noResult.current = false;
+    }
+
+    if (0 !== preparedSpells.length) {
+      msnry.current!.reloadItems!();
+      msnry.current!.layout!();
+    }
+
+    if (0 === preparedSpells.length) {
+      if (msnry.current) msnry.current!.destroy!();
+      noResult.current = true;
+    }
+  }, [preparedSpells, msnry]);
+
+  return (
+    <Collapsible
+      handleClick={handleToggle}
+      id="collapsibleSpells"
+      label={`Prepared Spells (${preparedSpells.length})`}
+    >
+      <dl className="alt-grid">
+        {0 !== preparedSpells.length &&
+          preparedSpells.map((spell) => {
+            const isPrepared =
+              0 !== preparedSpells.length && preparedSpells.includes(spell);
+
+            return (
+              <Spell
+                key={`${spell.source.toLowerCase()}-${spell.index}-prepared`}
+                searchTerm={searchTerm}
+                preparedSpells={preparedSpells}
+                isPrepared={isPrepared}
+                spell={spell}
+                msnry={msnry}
+              >
+                <button
+                  onClick={() => {
+                    const newSpells = preparedSpells.filter(
+                      (prepared) => spell !== prepared
+                    );
+                    setPreparedSpells(newSpells);
+                  }}
+                  aria-label={`Remove ${spell.name}`}
+                  aria-checked={isPrepared}
+                >
+                  Remove
+                </button>
+              </Spell>
+            );
+          })}
+      </dl>
+    </Collapsible>
+  );
+}
+
+export default function Spells({
+  filteredSpells,
+  searchTerm,
+  children,
+}: Props) {
+  const [preparedSpells, setPreparedSpells] = useState<DDSpell[]>([]);
+
+  return (
     <div className={styles.spellContainer}>
       {/* Details tag and React (or any other framework) doesn't play well */}
       {/* To implement Toggle All button, it may be better to switch to somwthing other than Details tag, will decide later */}
@@ -76,51 +196,20 @@ export default function Spells({
         </button>
       </div> */}
 
-      <dl className="alt-grid">
-        {0 !== preparedSpells.length &&
-          preparedSpells.map((spell) => (
-            <Spell
-              key={`${spell.source.toLowerCase()}-${spell.index}-prepared`}
-              searchTerm={searchTerm}
-              spell={spell}
-              msnry={msnry}
-            >
-              <button
-                data-key={`${spell.source.toLowerCase()}-${spell.index}`}
-                onClick={handlePrepare}
-                aria-label={`Remove ${spell.name}`}
-                aria-checked={spell.isPrepared}
-              >
-                Remove
-              </button>
-            </Spell>
-          ))}
-      </dl>
+      <GridPreparedSpells
+        preparedSpells={preparedSpells}
+        setPreparedSpells={setPreparedSpells}
+        searchTerm={searchTerm}
+      />
 
       {children}
 
-      <dl className="grid">
-        {0 !== filteredSpells.length &&
-          filteredSpells.map((spell) => (
-            <Spell
-              key={`${spell.source.toLowerCase()}-${spell.index}`}
-              searchTerm={searchTerm}
-              spell={spell}
-              msnry={msnry}
-            >
-              <button
-                data-key={`${spell.source.toLowerCase()}-${spell.index}`}
-                onClick={handlePrepare}
-                aria-label={`${!spell.isPrepared ? "Prepare" : "Remove"} ${
-                  spell.name
-                }`}
-                aria-checked={spell.isPrepared}
-              >
-                {!spell.isPrepared ? "Prepare" : "Remove"}
-              </button>
-            </Spell>
-          ))}
-      </dl>
+      <GridAllSpells
+        filteredSpells={filteredSpells}
+        preparedSpells={preparedSpells}
+        setPreparedSpells={setPreparedSpells}
+        searchTerm={searchTerm}
+      />
     </div>
   );
 }

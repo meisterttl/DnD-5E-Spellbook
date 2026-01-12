@@ -30,11 +30,7 @@ function App() {
         setSearchTerm={setSearchTerm}
       />
 
-      <Spells
-        filteredSpells={filteredSpells}
-        setFilteredSpells={setFilteredSpells}
-        searchTerm={searchTerm}
-      >
+      <Spells filteredSpells={filteredSpells} searchTerm={searchTerm}>
         <div className="spell-counter">
           {filteredSpells.length} of {allSpells.length} Spells
         </div>

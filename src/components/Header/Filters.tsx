@@ -1,7 +1,7 @@
 import { coreSources, filterSets } from "../../constants";
 import { saveFilters } from "../../utils/helpers";
 import Fieldset from "./Form/Fieldset";
-import styles from "./header.module.css";
+import Collapsible from "../Collapsible";
 
 type Props = {
   activeSources: string[];
@@ -9,9 +9,7 @@ type Props = {
 };
 
 export default function Filters({ activeSources, setActiveSources }: Props) {
-  const handleCollapse = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const isVisible = e.currentTarget.ariaExpanded;
     e.currentTarget.ariaExpanded =
       "true" === isVisible ? String(!isVisible) : String(!!isVisible);
@@ -22,6 +20,7 @@ export default function Filters({ activeSources, setActiveSources }: Props) {
     const newActiveSources = activeSources.includes(sourceId)
       ? activeSources.filter((source) => sourceId !== source)
       : [...activeSources, sourceId];
+
     setActiveSources(newActiveSources);
     saveFilters("spellSources", newActiveSources.join(","));
   };
@@ -34,33 +33,20 @@ export default function Filters({ activeSources, setActiveSources }: Props) {
         props={{ activeSources, handleFilter }}
       />
 
-      <div className={styles.filterCollapsible}>
-        <button
-          className={styles.filterCollapsibleToggle}
-          aria-expanded="false"
-          aria-controls="collapsibleContent"
-          onClick={handleCollapse}
-        >
-          <span>More Sources</span>
-          <svg role="img" width="30" height="30" alt="Toggle Content">
-            <use href="#chevron" xlinkHref="#chevron"></use>
-          </svg>
-        </button>
-
-        <div
-          className={styles.filterCollapsibleContent}
-          id="collapsibleContent"
-        >
-          {filterSets.map((set, index) => (
-            <Fieldset
-              key={`${set.label.toLowerCase()}-${index}`}
-              legend={set.label}
-              sources={set.data}
-              props={{ activeSources, handleFilter }}
-            />
-          ))}
-        </div>
-      </div>
+      <Collapsible
+        handleClick={handleToggle}
+        id="collapsibleContent"
+        label="More Sources"
+      >
+        {filterSets.map((set, index) => (
+          <Fieldset
+            key={`${set.label.toLowerCase()}-${index}`}
+            legend={set.label}
+            sources={set.data}
+            props={{ activeSources, handleFilter }}
+          />
+        ))}
+      </Collapsible>
     </>
   );
 }

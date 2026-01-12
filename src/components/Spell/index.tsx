@@ -19,18 +19,26 @@ import styles from "./spell.module.css";
 
 type Props = {
   searchTerm: string;
+  preparedSpells: DDSpell[];
+  isPrepared: boolean;
   spell: DDSpell;
   msnry: RefObject<Masonry | null>;
   children: React.ReactNode;
 };
 
-export default function Spell({ searchTerm, spell, msnry, children }: Props) {
+export default function Spell({
+  searchTerm,
+  isPrepared,
+  spell,
+  msnry,
+  children,
+}: Props) {
   const newStyleSources = ["XPHB", "EFA", "FRHoF"];
   const spellName = `${highlightSearchTerms(
     spell.name.normalize("NFD"),
     searchTerm
   )}${"PHB" === spell.source ? ` (Legacy)` : ""}`;
-  const prepared = spell.isPrepared ? ` ${styles.spellPrepared}` : "";
+  const additionalClass = isPrepared ? ` ${styles.spellPrepared}` : "";
 
   return (
     <div
@@ -38,7 +46,7 @@ export default function Spell({ searchTerm, spell, msnry, children }: Props) {
       data-index={spell.index}
       data-source={spell.source}
     >
-      <div className={`${styles.spellCard}${prepared}`}>
+      <div className={`${styles.spellCard}${additionalClass}`}>
         {/* TODO: Find a way to not use dangeroruslySetInnerHTML */}
         <dt
           dangerouslySetInnerHTML={{

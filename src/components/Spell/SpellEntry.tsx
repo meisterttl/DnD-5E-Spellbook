@@ -1,9 +1,9 @@
 // import React from "react";
-import SpellTypeBasic from "./Types/SpellTypeBasic";
-import SpellTypeEntries from "./Types/SpellTypeEntries";
-import SpellTypeList from "./Types/SpellTypeList";
-import SpellTypeTable from "./Types/SpellTypeTable";
-import SpellTypeQuote from "./Types/SpellTypeQuote";
+import SpellTypeBasic from "./Entries/SpellTypeBasic";
+import SpellTypeEntries from "./Entries/SpellTypeEntries";
+import SpellTypeList from "./Entries/SpellTypeList";
+import SpellTypeTable from "./Entries/SpellTypeTable";
+import SpellTypeQuote from "./Entries/SpellTypeQuote";
 import { sanitizeEntry } from "../../utils/helpers";
 import Masonry from "masonry-layout";
 import type { RefObject } from "react";
