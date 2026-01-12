@@ -2,15 +2,15 @@ import { useState } from "react";
 import allSpells from "./data";
 import Header from "./components/Header";
 import Spells from "./components/Spells";
-import { loadFilters } from "./utils/helpers";
+import { loadSettings } from "./utils/helpers";
 import type { DDSpell } from "./types";
 import "normalize.css";
 import "./App.css";
 
-function App() {
-  // Load filters from localStorage
-  const initialFilters = loadFilters("spellSources");
+// Load filters from localStorage
+const initialFilters = loadSettings("spellSources");
 
+function App() {
   // Set parameters for loading initial spells
   const spells = allSpells
     .filter((spell) => initialFilters!.includes(spell.source.toLowerCase()))

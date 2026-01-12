@@ -44,8 +44,8 @@ body {
 }
 
 .hidden {
-  height: 1px;
   width: 1px;
+  height: 1px;
 
   position: absolute !important;
   top: 1em;

@@ -1,15 +1,16 @@
 .collapsible {
-  flex-basis: 100%;
   margin-bottom: 1rem;
+
+  flex-basis: 100%;
 }
 
 .collapsibleToggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding-top: 0.1875rem;
   padding-bottom: 0.1875rem;
+
   position: relative;
   width: 100%;
 
@@ -47,11 +48,10 @@
     background-color: white;
 
     &:after {
-      width: 100%;
-
       position: absolute;
       top: 50%;
       left: 0;
+      width: 100%;
       z-index: -1;
 
       border-top: 1px solid #ccc9c9;

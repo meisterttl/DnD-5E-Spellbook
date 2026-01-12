@@ -1,6 +1,4 @@
 .spellContainer {
-  /* padding-left: 1rem;
-  padding-right: 1rem; */
   max-width: none;
 
   @media screen and (min-width: 37.5rem) {
@@ -27,6 +25,7 @@
   dl {
     display: flex;
     flex-wrap: wrap;
+
     width: 100%;
 
     dt {
@@ -79,6 +78,7 @@
       left: calc(100% + 0.8125rem);
       width: 1rem;
       height: 1rem;
+
       background-color: black;
       content: "";
       opacity: 0;

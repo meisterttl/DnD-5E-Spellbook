@@ -1,5 +1,6 @@
+import React from "react";
 import { coreSources, filterSets } from "../../constants";
-import { saveFilters } from "../../utils/helpers";
+import { saveSettings } from "../../utils/helpers";
 import Fieldset from "./Form/Fieldset";
 import Collapsible from "../Collapsible";
 
@@ -22,7 +23,7 @@ export default function Filters({ activeSources, setActiveSources }: Props) {
       : [...activeSources, sourceId];
 
     setActiveSources(newActiveSources);
-    saveFilters("spellSources", newActiveSources.join(","));
+    saveSettings("spellSources", newActiveSources.join(","));
   };
 
   return (

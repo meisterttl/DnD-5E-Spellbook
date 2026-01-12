@@ -18,7 +18,7 @@ import type { DDSpell } from "../../types";
 import styles from "./spell.module.css";
 
 type Props = {
-  searchTerm: string;
+  searchTerm: string | null;
   preparedSpells: DDSpell[];
   isPrepared: boolean;
   spell: DDSpell;
@@ -34,10 +34,9 @@ export default function Spell({
   children,
 }: Props) {
   const newStyleSources = ["XPHB", "EFA", "FRHoF"];
-  const spellName = `${highlightSearchTerms(
-    spell.name.normalize("NFD"),
-    searchTerm
-  )}${"PHB" === spell.source ? ` (Legacy)` : ""}`;
+  const spellName = searchTerm
+    ? highlightSearchTerms(spell.name.normalize("NFD"), searchTerm)
+    : spell.name;
   const additionalClass = isPrepared ? ` ${styles.spellPrepared}` : "";
 
   return (
@@ -50,7 +49,7 @@ export default function Spell({
         {/* TODO: Find a way to not use dangeroruslySetInnerHTML */}
         <dt
           dangerouslySetInnerHTML={{
-            __html: spellName,
+            __html: `${spellName}${"PHB" === spell.source ? " (Legacy)" : ""}`,
           }}
         ></dt>
 
@@ -104,6 +103,7 @@ export default function Spell({
           slug={spell.index!}
           entries={spell.entries}
           entriesHigherLevel={spell.entriesHigherLevel}
+          isPrepared={null === searchTerm && isPrepared} // Expand Spell Descriptions on Prepared Spells section
           msnry={msnry}
         />
 

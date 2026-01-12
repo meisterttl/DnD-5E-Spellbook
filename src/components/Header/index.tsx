@@ -54,7 +54,7 @@ export default function Header({
         )
         .filter((spell) => stringMatch(spell.index!, needle))
         .sort((a, b) =>
-          Number(b.isPrepared) - Number(a.isPrepared) || "level" === sortBy
+          "level" === sortBy
             ? a.level - b.level
             : a[sortBy as sortKey].localeCompare(b[sortBy as sortKey])
         );

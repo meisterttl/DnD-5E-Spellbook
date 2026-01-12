@@ -12,18 +12,22 @@ export const highlightSearchTerms = (word: string, needle: string) => {
   return "" === needle ? word : word.replace(regex, `<mark>$1</mark>`);
 };
 
-export const loadFilters = (name: string) => {
+export const loadSettings = (name: string) => {
   switch (name) {
     case "spellSources":
       return localStorage.getItem(name)
         ? localStorage.getItem(name)!.split(",")
         : ["phb"];
+    case "preparedSpells":
+      return localStorage.getItem(name)
+        ? JSON.parse(localStorage.getItem(name)!)
+        : [];
     default:
       return;
   }
 };
 
-export const saveFilters = (name: string, value: string) =>
+export const saveSettings = (name: string, value: string) =>
   localStorage.setItem(name, value);
 
 // Needed only to change "dispel" and "trigger" for now
@@ -131,4 +135,5 @@ export const stringMatch = (word: string, needle: string) => {
 };
 
 // Add 0 in front of 1-9
-export const twoDigits = (n: number) => (n < 10 ? `0${n}` : n);
+// export const twoDigits = (n: number) => (n < 10 ? `0${n}` : n);
+export const twoDigits = (n: number) => Number(String(n).padStart(2, "0"));

@@ -1,4 +1,3 @@
-// import React from "react";
 import SpellTypeBasic from "./Entries/SpellTypeBasic";
 import SpellTypeEntries from "./Entries/SpellTypeEntries";
 import SpellTypeList from "./Entries/SpellTypeList";
@@ -20,6 +19,7 @@ type Props = {
   slug: string;
   entries: DDSpellEntries[];
   entriesHigherLevel: DDSpellTypeEntries[] | undefined;
+  isPrepared: boolean;
   msnry: RefObject<Masonry | null>;
 };
 
@@ -27,6 +27,7 @@ export default function SpellEntry({
   slug,
   entries,
   entriesHigherLevel,
+  isPrepared,
   msnry,
 }: Props) {
   const handleToggle = () => {
@@ -36,7 +37,7 @@ export default function SpellEntry({
   return (
     <div className={styles.spellEntries}>
       <dd>
-        <details onToggle={handleToggle}>
+        <details onToggle={handleToggle} open={isPrepared}>
           <summary>Spell Description</summary>
 
           {entries &&

@@ -11,4 +11,4 @@ All credits go to 5etools (https://5e.tools/) since their JSON files were used t
 - Add more spells from other sources ✅
 - Add Filter function ✅
 - Add Sort function ✅
-- Add Memorize/Prepare Spell function
+- Add Prepare Spell function ✅
