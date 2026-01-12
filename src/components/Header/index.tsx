@@ -21,7 +21,6 @@ type sortKey = "name" | "school";
 export default function Header({
   allSpells,
   initialFilters,
-  filteredSpells,
   setFilteredSpells,
   searchTerm,
   setSearchTerm,
@@ -55,8 +54,8 @@ export default function Header({
         )
         .filter((spell) => stringMatch(spell.index!, needle))
         .sort((a, b) =>
-          "level" === sortBy
-            ? a[sortBy] - b[sortBy]
+          Number(b.isPrepared) - Number(a.isPrepared) || "level" === sortBy
+            ? a.level - b.level
             : a[sortBy as sortKey].localeCompare(b[sortBy as sortKey])
         );
 
@@ -149,10 +148,6 @@ export default function Header({
             <option value="school">School</option>
             <option value="level">Level</option>
           </select>
-        </div>
-
-        <div className={styles.spellCounter}>
-          {filteredSpells.length} of {allSpells.length} Spells
         </div>
       </div>
     </>

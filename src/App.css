@@ -24,6 +24,19 @@ body {
   line-height: 1.5;
 }
 
+.spell-counter {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  text-align: right;
+
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
 .no-results {
   padding-left: 1rem;
   padding-right: 1rem;

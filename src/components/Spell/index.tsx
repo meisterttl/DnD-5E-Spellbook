@@ -1,3 +1,4 @@
+import React from "react";
 import SpellEntry from "./SpellEntry";
 import {
   getCastTime,
@@ -17,17 +18,19 @@ import type { DDSpell } from "../../types";
 import styles from "./spell.module.css";
 
 type Props = {
-  spell: DDSpell;
   searchTerm: string;
+  spell: DDSpell;
   msnry: RefObject<Masonry | null>;
+  children: React.ReactNode;
 };
 
-export default function Spell({ spell, searchTerm, msnry }: Props) {
+export default function Spell({ searchTerm, spell, msnry, children }: Props) {
   const newStyleSources = ["XPHB", "EFA", "FRHoF"];
   const spellName = `${highlightSearchTerms(
     spell.name.normalize("NFD"),
     searchTerm
   )}${"PHB" === spell.source ? ` (Legacy)` : ""}`;
+  const prepared = spell.isPrepared ? ` ${styles.spellPrepared}` : "";
 
   return (
     <div
@@ -35,7 +38,7 @@ export default function Spell({ spell, searchTerm, msnry }: Props) {
       data-index={spell.index}
       data-source={spell.source}
     >
-      <div className={styles.spellCard}>
+      <div className={`${styles.spellCard}${prepared}`}>
         {/* TODO: Find a way to not use dangeroruslySetInnerHTML */}
         <dt
           dangerouslySetInnerHTML={{
@@ -95,6 +98,8 @@ export default function Spell({ spell, searchTerm, msnry }: Props) {
           entriesHigherLevel={spell.entriesHigherLevel}
           msnry={msnry}
         />
+
+        {children}
       </div>
     </div>
   );

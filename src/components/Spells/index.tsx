@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Spell from "../Spell";
 import Masonry from "masonry-layout";
 import type { DDSpell } from "../../types";
@@ -6,14 +6,40 @@ import styles from "./spells.module.css";
 
 type Props = {
   filteredSpells: DDSpell[];
+  setFilteredSpells: React.Dispatch<React.SetStateAction<DDSpell[]>>;
   searchTerm: string;
+  children: React.ReactNode;
 };
 
-export default function Spells({ filteredSpells, searchTerm }: Props) {
+export default function Spells({
+  filteredSpells,
+  setFilteredSpells,
+  searchTerm,
+  children,
+}: Props) {
   // const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
+  // @ts-expect-error: Ignore for now
   const [preparedSpells, setPreparedSpells] = useState<DDSpell[]>([]);
   const noResult = useRef<boolean>(true);
   const msnry = useRef<Masonry>(null);
+
+  const handlePrepare = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const key = e.currentTarget.dataset.key!.split("-");
+    const spellSource: string = key.shift()!;
+    const spellIndex: string = key.join("-");
+
+    const newSpells = filteredSpells.map((spell: DDSpell) =>
+      spell.index === spellIndex && spell.source.toLowerCase() === spellSource
+        ? {
+            ...spell,
+            isPrepared: !spell.isPrepared,
+          }
+        : spell
+    );
+    setFilteredSpells(newSpells);
+  };
 
   useEffect(() => {
     // Needs to re-initialize Masonry layout when there are 0 spells visible on the screen
@@ -50,18 +76,51 @@ export default function Spells({ filteredSpells, searchTerm }: Props) {
         </button>
       </div> */}
 
-      {0 !== filteredSpells.length && (
-        <dl className="grid">
-          {filteredSpells.map((spell) => (
+      <dl className="alt-grid">
+        {0 !== preparedSpells.length &&
+          preparedSpells.map((spell) => (
             <Spell
-              key={`${spell.index}-${spell.source.toLowerCase()}`}
-              spell={spell}
+              key={`${spell.source.toLowerCase()}-${spell.index}-prepared`}
               searchTerm={searchTerm}
+              spell={spell}
               msnry={msnry}
-            />
+            >
+              <button
+                data-key={`${spell.source.toLowerCase()}-${spell.index}`}
+                onClick={handlePrepare}
+                aria-label={`Remove ${spell.name}`}
+                aria-checked={spell.isPrepared}
+              >
+                Remove
+              </button>
+            </Spell>
           ))}
-        </dl>
-      )}
+      </dl>
+
+      {children}
+
+      <dl className="grid">
+        {0 !== filteredSpells.length &&
+          filteredSpells.map((spell) => (
+            <Spell
+              key={`${spell.source.toLowerCase()}-${spell.index}`}
+              searchTerm={searchTerm}
+              spell={spell}
+              msnry={msnry}
+            >
+              <button
+                data-key={`${spell.source.toLowerCase()}-${spell.index}`}
+                onClick={handlePrepare}
+                aria-label={`${!spell.isPrepared ? "Prepare" : "Remove"} ${
+                  spell.name
+                }`}
+                aria-checked={spell.isPrepared}
+              >
+                {!spell.isPrepared ? "Prepare" : "Remove"}
+              </button>
+            </Spell>
+          ))}
+      </dl>
     </div>
   );
 }

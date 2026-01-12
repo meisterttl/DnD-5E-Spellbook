@@ -30,16 +30,22 @@ function App() {
         setSearchTerm={setSearchTerm}
       />
 
+      <Spells
+        filteredSpells={filteredSpells}
+        setFilteredSpells={setFilteredSpells}
+        searchTerm={searchTerm}
+      >
+        <div className="spell-counter">
+          {filteredSpells.length} of {allSpells.length} Spells
+        </div>
+      </Spells>
+
       {0 === filteredSpells.length && (
         <div className="no-results">
           <p className="lead alert">
             No spells found {!!searchTerm && `(Search term: ${searchTerm})`}
           </p>
         </div>
-      )}
-
-      {0 !== filteredSpells.length && (
-        <Spells filteredSpells={filteredSpells} searchTerm={searchTerm} />
       )}
     </>
   );
