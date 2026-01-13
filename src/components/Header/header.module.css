@@ -5,17 +5,18 @@
   }
 
   h1 {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    margin: 0;
 
     font-family: "Oldenburg", serif;
     font-style: normal;
     font-weight: 700;
+  }
+}
 
-    @media screen and (min-width: 37.5rem) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+.spellSearch {
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
 
@@ -24,6 +25,7 @@
   flex-wrap: wrap;
 }
 
+.switchContainer,
 .searchContainer,
 .filterContainer,
 .filterSelectContainer {
@@ -35,6 +37,13 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
+}
+
+.switchContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .searchContainer {
@@ -51,14 +60,14 @@
     padding: 0.25rem 0.5rem;
 
     background-color: #fafafa;
-    border: 1px solid #0d0907;
+    border: 1px solid var(--color);
   }
 
   button[type="submit"] {
     margin-left: -1px;
     padding: 0.5rem;
 
-    border: 1px solid #0d0907;
+    border: 1px solid var(--color);
 
     &:hover {
       cursor: pointer;
@@ -107,7 +116,7 @@
         margin-right: 0.75rem;
         padding: 0.75rem;
 
-        border: 1px solid #0d0907;
+        border: 1px solid var(--color);
         content: "";
       }
 
@@ -118,7 +127,7 @@
         width: 1rem;
         height: 1rem;
 
-        background-color: #0d0907;
+        background-color: var(--color);
         content: "";
         opacity: 0;
         transition: opacity 0.05s;
@@ -155,6 +164,7 @@
     height: 2rem;
     background-color: transparent;
     border: none;
+    color: var(--color);
     font-size: 1.5rem;
 
     &:hover {
@@ -172,7 +182,8 @@
     padding: 0.25rem 0.5rem;
 
     background-color: transparent;
-    border: 1px solid #0d0907;
+    border: 1px solid var(--color);
+    color: var(--color);
   }
 }
 
@@ -196,6 +207,7 @@
     padding: 0.25rem 0.5rem;
 
     background-color: transparent;
-    border: 1px solid #0d0907;
+    border: 1px solid var(--color);
+    color: var(--color);
   }
 }

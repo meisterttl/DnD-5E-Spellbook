@@ -22,6 +22,10 @@ export const loadSettings = (name: string) => {
       return localStorage.getItem(name)
         ? JSON.parse(localStorage.getItem(name)!)
         : [];
+    case "darkMode":
+      return localStorage.getItem(name)
+        ? localStorage.getItem(name)!
+        : "disabled";
     default:
       return;
   }

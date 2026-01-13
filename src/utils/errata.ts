@@ -135,6 +135,76 @@ const errata: DDErrata = {
       { name: "Wizard", source: "XPHB", definedInSource: "EGW" },
     ],
   },
+  "Freedom of the Waves": {
+    source: "TDCSR",
+    classes: [
+      {
+        name: "Druid",
+        source: "PHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Ranger",
+        source: "PHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Sorcerer",
+        source: "PHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Druid",
+        source: "XPHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Ranger",
+        source: "XPHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Sorcerer",
+        source: "XPHB",
+        definedInSource: "TDCSR",
+      },
+    ],
+  },
+  "Freedom of the Winds": {
+    source: "TDCSR",
+    classes: [
+      {
+        name: "Druid",
+        source: "PHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Ranger",
+        source: "PHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Sorcerer",
+        source: "PHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Druid",
+        source: "XPHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Ranger",
+        source: "XPHB",
+        definedInSource: "TDCSR",
+      },
+      {
+        name: "Sorcerer",
+        source: "XPHB",
+        definedInSource: "TDCSR",
+      },
+    ],
+  },
 };
 
 const isUpdated = (spell: DDSpell) => {

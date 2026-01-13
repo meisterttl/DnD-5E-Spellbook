@@ -1,0 +1,192 @@
+/**
+ * https://kittygiraudel.com/2021/04/05/an-accessible-toggle/
+ */
+
+/**
+ * 1. Vertically center the toggle and the label. `flex` could be used if a 
+ *    block-level display is preferred.
+ * 2. Make sure the toggle remains clean and functional even if the label is
+ *    too wide to fit on one line. Thanks @jouni_kantola for the heads up!
+ * 3. Grant a position context for the visually hidden and absolutely
+ *    positioned input.
+ * 4. Provide spacing between the toggle and the text regardless of layout
+ *    direction. If browser support is considered insufficient, use
+ *    a right margin on `.ToggleDisplay` in LTR, and left margin in RTL.
+ *    See: https://caniuse.com/flexbox-gap
+ */
+.Toggle {
+  display: inline-flex; /* 1 */
+  align-items: center; /* 1 */
+  flex-wrap: wrap; /* 2 */
+  position: relative; /* 3 */
+  gap: 1ch; /* 4 */
+}
+
+/**
+ * 1. Vertically center the icons and space them evenly in the available 
+ *    horizontal space, essentially giving something like: [ ✔ ✗ ]
+ * 2. Size the display according to the size of the handle. `box-sizing`
+ *    could use `border-box` but the border would have to be considered
+ *    in the `width` computation. Either way works.
+ * 3. For the toggle to be visible in Windows High-Contrast Mode, we apply a
+ *    thin semi-transparent (or fully transparent) border.
+ *    Kind thanks to Adrian Roselli for the tip:
+ *    https://twitter.com/aardrian/status/1379786724222631938?s=20
+ * 4. Grant a position context for the pseudo-element making the handle.
+ * 5. Give a pill-like shape with rounded corners, regardless of the size.
+ * 6. The default state is considered unchecked, hence why this pale red is
+ *    used as a background color.
+ */
+.ToggleDisplay {
+  --offset: 0.35em;
+  --diameter: 1.5em;
+
+  display: inline-flex !important; /* 1 */
+  align-items: center; /* 1 */
+  justify-content: space-around; /* 1 */
+
+  width: calc(var(--diameter) * 2 + var(--offset) * 2); /* 2 */
+  height: calc(var(--diameter) + var(--offset) * 2); /* 2 */
+  box-sizing: content-box; /* 2 */
+
+  border: 0.1em solid #e1e1dd; /* 3 */
+
+  position: relative; /* 4 */
+  border-radius: 100vw; /* 5 */
+  background-color: #e1e1dd; /* 6 */
+
+  transition: 250ms;
+  cursor: pointer;
+}
+
+/**
+ * 1. Size the round handle according to the diameter custom property.
+ * 2. For the handle to be visible in Windows High-Contrast Mode, we apply a
+ *    thin semi-transparent (or fully transparent) border.
+ *    Kind thanks to Adrian Roselli for the tip:
+ *    https://twitter.com/aardrian/status/1379786724222631938?s=20
+ * 3. Absolutely position the handle on top of the icons, vertically centered
+ *    within the container and offset by the spacing amount on the left.
+ * 4. Give the handle a solid background to hide the icon underneath. This
+ *    could be dark in a dark mode theme, as long as it’s solid.
+ */
+.ToggleDisplay::before {
+  content: "";
+
+  width: var(--diameter); /* 1 */
+  height: var(--diameter); /* 1 */
+  border-radius: 50%; /* 1 */
+
+  box-sizing: border-box; /* 2 */
+  border: 0.1 solid #e1e1dd; /* 2 */
+
+  position: absolute; /* 3 */
+  z-index: 2; /* 3 */
+  top: 50%; /* 3 */
+  left: var(--offset); /* 3 */
+  transform: translate(0, -50%); /* 3 */
+
+  background-color: #0d0907; /* 4 */
+  transition: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ToggleDisplay {
+    transition-duration: 0ms;
+  }
+}
+
+.ToggleInput {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/**
+ * 1. When the input is focused, provide the display the default outline
+ *    styles from the browser to mimic a native control. This can be
+ *    customised to have a custom focus outline.
+ */
+.ToggleInput:focus + .ToggleDisplay {
+  outline: 2px inset #212121; /* 1 */
+  outline: 2px auto -webkit-focus-ring-color; /* 1 */
+}
+
+/**
+ * 1. When the toggle is interacted with with a mouse click (and therefore
+ *    the focus does not have to be ‘visible’ as per browsers heuristics),
+ *    remove the focus outline. This is the native checkbox’s behaviour where
+ *    the focus is not visible when clicking it.
+ */
+.ToggleInput:focus:not(:focus-visible) + .ToggleDisplay {
+  outline: 0; /* 1 */
+}
+
+/**
+ * 1. When the input is checked, change the display background color to a
+ *    pale green instead. 
+ */
+.ToggleInput:checked + .ToggleDisplay {
+  background-color: #222222; /* 1 */
+}
+
+/**
+ * 1. When the input is checked, slide the handle to the right so it covers
+ *    the cross icon instead of the checkmark one.
+ */
+.ToggleInput:checked + .ToggleDisplay::before {
+  background-color: #fafafa;
+  transform: translate(100%, -50%); /* 1 */
+}
+
+/**
+ * 1. When the input is disabled, tweak the toggle styles so it looks dimmed 
+ *    with less sharp colors, softer opacity and a relevant cursor.
+ */
+.ToggleInput:disabled + .ToggleDisplay {
+  opacity: 0.6; /* 1 */
+  filter: grayscale(40%); /* 1 */
+  cursor: not-allowed; /* 1 */
+}
+
+/**
+ * 1. Flip the original position of the unchecked toggle in RTL.
+ */
+[dir="rtl"] .ToggleDisplay::before {
+  left: auto; /* 1 */
+  right: var(--offset); /* 1 */
+}
+
+/**
+ * 1. Move the handle in the correct direction in RTL.
+ */
+[dir="rtl"] .ToggleInput:checked + .ToggleDisplay::before {
+  transform: translate(-100%, -50%); /* 1 */
+}
+
+.ToggleIcon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  color: inherit;
+  fill: currentcolor;
+  vertical-align: middle;
+}
+
+/**
+ * 1. The cross looks visually bigger than the checkmark so we adjust its
+ *    size. This might not be needed depending on the icons.
+ */
+.ToggleIconCross {
+  color: #0d0907;
+  font-size: 85%; /* 1 */
+}
+
+.ToggleIconCheckmark {
+  color: #fafafa;
+}

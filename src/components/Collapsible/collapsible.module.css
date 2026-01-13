@@ -18,9 +18,10 @@
 
   border: none;
   background-color: transparent;
+  color: var(--color);
   overflow: hidden;
   fill: none;
-  stroke: #0d0907;
+  stroke: var(--color);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1px;
@@ -41,7 +42,7 @@
     width: calc(100% - 3.875rem);
     z-index: 0;
 
-    border-top: 1px solid #e1e1dd;
+    border-top: 1px solid var(--border-color);
     content: "";
 
     @media screen and (min-width: 37.5rem) {
@@ -66,11 +67,11 @@
 
     z-index: 0;
 
-    background-color: #fafafa;
+    background-color: var(--background-color);
   }
 
   svg {
-    background-color: #fafafa;
+    background-color: var(--background-color);
   }
 }
 

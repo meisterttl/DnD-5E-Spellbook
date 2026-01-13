@@ -12,5 +12,5 @@ All credits go to 5etools (https://5e.tools/) since their JSON files were used t
 - Add Filter function ✅
 - Add Sort function ✅
 - Add Prepare Spell function ✅
-- Add Light/Dark mode
+- Add Light/Dark mode ✅
 - Add Spell Slots

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import allSpells from "./data";
+import LightDarkMode from "./components/LightDarkMode";
 import Header from "./components/Header";
 import Spells from "./components/Spells";
 import { loadSettings } from "./utils/helpers";
@@ -10,7 +11,7 @@ import "./App.css";
 // Load filters from localStorage
 const initialFilters = loadSettings("spellSources");
 
-function App() {
+function Main({ children }: { children: React.ReactNode }) {
   // Set parameters for loading initial spells
   const spells = allSpells
     .filter((spell) => initialFilters!.includes(spell.source.toLowerCase()))
@@ -28,6 +29,7 @@ function App() {
         setFilteredSpells={setFilteredSpells}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        children={children}
       />
 
       <Spells filteredSpells={filteredSpells} searchTerm={searchTerm}>
@@ -36,6 +38,14 @@ function App() {
         </div>
       </Spells>
     </>
+  );
+}
+
+function App() {
+  return (
+    <Main>
+      <LightDarkMode />
+    </Main>
   );
 }
 

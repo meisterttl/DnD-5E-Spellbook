@@ -1,6 +1,36 @@
 @import url("https://fonts.googleapis.com/css2?family=Oldenburg&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
 
+:root,
+:root.light {
+  --background-color: #fafafa;
+  --color: #0d0907;
+  --border-color: #e1e1dd;
+  --alt-color: #ccc9c9;
+  --alert-color: #e7052f;
+  --accent-color: #0b6623;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #333333;
+    --color: #fafafa;
+    --border-color: #646262;
+    --alt-color: #111111;
+    --alert-color: #fd5f7d;
+    --accent-color: #21a444;
+  }
+}
+
+:root.dark {
+  --background-color: #333333;
+  --color: #fafafa;
+  --border-color: #646262;
+  --alt-color: #111111;
+  --alert-color: #fd5f7d;
+  --accent-color: #21a444;
+}
+
 *,
 *:before,
 *:after {
@@ -16,8 +46,8 @@ body {
   width: 100%;
   height: 100%;
 
-  background-color: #fafafa;
-  color: #0d0907;
+  background-color: var(--background-color);
+  color: var(--color);
   font-family: "Nunito Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -54,7 +84,7 @@ body {
 }
 
 .alert {
-  color: #e7052f;
+  color: var(--alert-color);
 }
 
 .hidden {
