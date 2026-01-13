@@ -16,6 +16,8 @@ body {
   width: 100%;
   height: 100%;
 
+  background-color: #fafafa;
+  color: #0d0907;
   font-family: "Nunito Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -40,6 +42,11 @@ body {
 .no-results {
   padding-left: 1rem;
   padding-right: 1rem;
+
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }
 
 .lead {

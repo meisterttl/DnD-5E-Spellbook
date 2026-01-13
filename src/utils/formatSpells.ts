@@ -185,7 +185,7 @@ export const getSpellType = (
   level: number,
   school: string,
   meta: { ritual: boolean } | undefined,
-  source: string = "PHB"
+  source: string
 ) => {
   const altStyleSource = ["BMT", "FTD", "SCC", "AAG", "SatO"];
   const isRitual = meta && meta.ritual ? " (ritual)" : "";
@@ -193,7 +193,7 @@ export const getSpellType = (
   const wordLevel = altStyleSource.includes(source) ? "Level" : "level";
   const spellSchool = altStyleSource.includes(source)
     ? capitalize(school)
-    : school;
+    : school.toLowerCase();
 
   return 0 === level
     ? `${capitalize(spellSchool!)} cantrip`
@@ -212,7 +212,7 @@ export const getSpellTypeXPHB = (
       ("XPHB" === each.source ||
         "EFA" === each.source ||
         "FRHoF" === each.source) &&
-      source === each.source
+      (source === each.source || source === each.definedInSource)
         ? each.name
         : undefined
     )

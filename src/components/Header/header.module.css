@@ -1,16 +1,22 @@
 .header {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 
   h1 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+
     font-family: "Oldenburg", serif;
     font-style: normal;
     font-weight: 700;
-  }
-}
 
-.spellSearch {
-  margin-bottom: 1rem;
+    @media screen and (min-width: 37.5rem) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
 }
 
 .spellSearchForm {
@@ -22,6 +28,13 @@
 .filterContainer,
 .filterSelectContainer {
   flex-basis: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }
 
 .searchContainer {
@@ -36,10 +49,16 @@
 
   input {
     padding: 0.25rem 0.5rem;
+
+    background-color: #fafafa;
+    border: 1px solid #0d0907;
   }
 
   button[type="submit"] {
+    margin-left: -1px;
     padding: 0.5rem;
+
+    border: 1px solid #0d0907;
 
     &:hover {
       cursor: pointer;
@@ -56,12 +75,13 @@
 
   label {
     display: flex;
-    align-items: center;
-
+    align-items: flex-start;
     padding-top: 0.3125rem;
     padding-bottom: 0.3125rem;
 
     position: relative;
+
+    line-height: 1.625rem;
 
     &:hover {
       cursor: pointer;
@@ -87,7 +107,7 @@
         margin-right: 0.75rem;
         padding: 0.75rem;
 
-        border: 1px solid black;
+        border: 1px solid #0d0907;
         content: "";
       }
 
@@ -98,7 +118,7 @@
         width: 1rem;
         height: 1rem;
 
-        background-color: black;
+        background-color: #0d0907;
         content: "";
         opacity: 0;
         transition: opacity 0.05s;
@@ -118,73 +138,6 @@
   fieldset {
     flex-basis: 100%;
   }
-}
-
-.filterCollapsible {
-  margin-bottom: 1rem;
-
-  flex-basis: 100%;
-
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.1875rem;
-    padding-bottom: 0.1875rem;
-
-    position: relative;
-    width: 100%;
-
-    border: none;
-    background-color: transparent;
-    overflow: hidden;
-    fill: none;
-    stroke: black;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1px;
-
-    svg {
-      background-color: white;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &[aria-expanded="true"] {
-      svg {
-        transform: rotate(180deg);
-      }
-
-      ~ .filterCollapsibleContent {
-        display: flex;
-        flex-wrap: wrap;
-      }
-    }
-  }
-
-  span {
-    padding-right: 0.625rem;
-
-    background-color: white;
-
-    &:after {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      z-index: -1;
-
-      border-top: 1px solid #ccc9c9;
-      content: "";
-    }
-  }
-}
-
-.filterCollapsibleContent {
-  display: none;
-  margin-top: 1rem;
 }
 
 .filterSelectContainer {
@@ -219,7 +172,7 @@
     padding: 0.25rem 0.5rem;
 
     background-color: transparent;
-    border: 1px solid black;
+    border: 1px solid #0d0907;
   }
 }
 
@@ -243,6 +196,6 @@
     padding: 0.25rem 0.5rem;
 
     background-color: transparent;
-    border: 1px solid black;
+    border: 1px solid #0d0907;
   }
 }

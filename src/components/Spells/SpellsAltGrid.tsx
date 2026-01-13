@@ -86,6 +86,12 @@ export default function SpellsAltGrid({
             </Spell>
           ))}
       </dl>
+
+      {0 === preparedSpells.length && (
+        <div className="no-results">
+          <p className="lead alert">You do not have any spells prepared!</p>
+        </div>
+      )}
     </Collapsible>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { spellClasses, spellSchools } from "../../constants";
 import Filters from "./Filters";
 import Select from "./Form/Select";
 import Steps from "./Form/Steps";
+import Collapsible from "../Collapsible";
+import { spellClasses, spellSchools } from "../../constants";
 import { generateSlug, stringMatch } from "../../utils/helpers";
 import type { DDSpell } from "../../types";
 import styles from "./header.module.css";
@@ -81,6 +82,12 @@ export default function Header({
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setSortBy(e.currentTarget.value);
 
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const isVisible = e.currentTarget.ariaExpanded;
+    e.currentTarget.ariaExpanded =
+      "true" === isVisible ? String(!isVisible) : String(!!isVisible);
+  };
+
   useEffect(() => {
     const results = filterSpells(searchTerm);
     setFilteredSpells(results);
@@ -98,43 +105,49 @@ export default function Header({
               setActiveSources={setActiveSources}
             />
 
-            <Select
-              selectOptions={spellClasses}
-              id="classes"
-              label="Class"
-              activeClass={activeClass}
-              setter={setActiveClass}
-            />
-
-            <Select
-              selectOptions={spellSchools}
-              id="schools"
-              label="School"
-              activeClass={activeSchool}
-              setter={setActiveSchool}
-            />
-
-            <Steps
-              id="level"
-              label="Spell Level"
-              min={0}
-              max={9}
-              activeLevel={activeLevel}
-              setActiveLevel={setActiveLevel}
-            />
-
-            <div className={styles.searchContainer}>
-              <label htmlFor="spell">Search spells by name</label>
-              <input
-                id="spell"
-                name="spell"
-                type="text"
-                value={searchTerm}
-                onChange={handleSearch}
+            <Collapsible
+              handleClick={handleToggle}
+              id="collapsibleFilters"
+              label="Filters"
+            >
+              <Select
+                selectOptions={spellClasses}
+                id="classes"
+                label="Class"
+                activeClass={activeClass}
+                setter={setActiveClass}
               />
 
-              <button type="submit">Search</button>
-            </div>
+              <Select
+                selectOptions={spellSchools}
+                id="schools"
+                label="School"
+                activeClass={activeSchool}
+                setter={setActiveSchool}
+              />
+
+              <Steps
+                id="level"
+                label="Spell Level"
+                min={0}
+                max={9}
+                activeLevel={activeLevel}
+                setActiveLevel={setActiveLevel}
+              />
+
+              <div className={styles.searchContainer}>
+                <label htmlFor="spell">Search spells by name</label>
+                <input
+                  id="spell"
+                  name="spell"
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                />
+
+                <button type="submit">Search</button>
+              </div>
+            </Collapsible>
           </form>
         </div>
       </header>

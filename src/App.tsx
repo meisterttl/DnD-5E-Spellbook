@@ -35,14 +35,6 @@ function App() {
           {filteredSpells.length} of {allSpells.length} Spells
         </div>
       </Spells>
-
-      {0 === filteredSpells.length && (
-        <div className="no-results">
-          <p className="lead alert">
-            No spells found {!!searchTerm && `(Search term: ${searchTerm})`}
-          </p>
-        </div>
-      )}
     </>
   );
 }

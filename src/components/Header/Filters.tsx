@@ -36,7 +36,7 @@ export default function Filters({ activeSources, setActiveSources }: Props) {
 
       <Collapsible
         handleClick={handleToggle}
-        id="collapsibleContent"
+        id="collapsibleSources"
         label="More Sources"
       >
         {filterSets.map((set, index) => (

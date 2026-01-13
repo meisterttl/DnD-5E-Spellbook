@@ -10,6 +10,8 @@
   justify-content: space-between;
   padding-top: 0.1875rem;
   padding-bottom: 0.1875rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 
   position: relative;
   width: 100%;
@@ -18,17 +20,34 @@
   background-color: transparent;
   overflow: hidden;
   fill: none;
-  stroke: black;
+  stroke: #0d0907;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1px;
 
-  svg {
-    background-color: white;
+  @media screen and (min-width: 37.5rem) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   &:hover {
     cursor: pointer;
+  }
+
+  &:before {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    width: calc(100% - 3.875rem);
+    z-index: 0;
+
+    border-top: 1px solid #e1e1dd;
+    content: "";
+
+    @media screen and (min-width: 37.5rem) {
+      left: 0.5rem;
+      width: calc(100% - 2.875rem);
+    }
   }
 
   &[aria-expanded="true"] {
@@ -45,18 +64,13 @@
   span {
     padding-right: 0.625rem;
 
-    background-color: white;
+    z-index: 0;
 
-    &:after {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      z-index: -1;
+    background-color: #fafafa;
+  }
 
-      border-top: 1px solid #ccc9c9;
-      content: "";
-    }
+  svg {
+    background-color: #fafafa;
   }
 }
 
