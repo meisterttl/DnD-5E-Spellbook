@@ -64,14 +64,16 @@ export default function SpellsGrid({
                 onClick={() => {
                   const newSpells = !isPrepared
                     ? [...preparedSpells, spell]
-                    : preparedSpells.filter((prepared) => spell !== prepared);
-
-                  setPreparedSpells(
-                    newSpells.sort(
-                      (a, b) =>
-                        a.level - b.level || a.name.localeCompare(b.name)
-                    )
+                    : preparedSpells.filter(
+                        (prepared) =>
+                          spell.name !== prepared.name &&
+                          spell.source !== prepared.source
+                      );
+                  newSpells.sort(
+                    (a, b) => a.level - b.level || a.name.localeCompare(b.name)
                   );
+
+                  setPreparedSpells(newSpells);
                 }}
                 aria-label={`${!isPrepared ? "Prepare" : "Remove"} ${
                   spell.name

@@ -6,7 +6,7 @@
     padding-right: 0.5rem;
   }
 
-  > div {
+  /* > div {
     padding-left: 1rem;
     padding-right: 1rem;
 
@@ -14,7 +14,7 @@
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
-  }
+  } */
 
   ul {
     margin-top: 0.5rem;
@@ -37,6 +37,31 @@
 
     dd:nth-child(2) {
       margin-bottom: 0.5rem;
+    }
+  }
+
+  button {
+    &[aria-controls] {
+      padding-left: 1rem;
+      padding-right: 1rem;
+
+      @media screen and (min-width: 37.5rem) {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      span {
+        &:after {
+          left: 1rem;
+          right: 1rem;
+          width: auto;
+
+          @media screen and (min-width: 37.5rem) {
+            left: 0.5rem;
+            right: 0.5rem;
+          }
+        }
+      }
     }
   }
 }
