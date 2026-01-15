@@ -4,7 +4,6 @@ import styles from "../header.module.css";
 type Props = {
   id: string;
   label: string;
-  min: number;
   max: number;
   activeLevel: number;
   setActiveLevel: React.Dispatch<React.SetStateAction<number>>;
@@ -13,7 +12,6 @@ type Props = {
 export default function Steps({
   id,
   label,
-  min,
   max,
   activeLevel,
   setActiveLevel,
@@ -42,7 +40,7 @@ export default function Steps({
 
   return (
     <div className={styles.filterSelectContainer}>
-      <label htmlFor="stepper">Filter by {label}</label>
+      <label htmlFor={`${id}-stepper`}>Filter by {label}</label>
 
       <div className={styles.stepper}>
         <button
@@ -58,8 +56,6 @@ export default function Steps({
         <select
           id={`${id}-stepper`}
           name={`${id}-stepper-input`}
-          min={`${String(min)}`}
-          max={`${String(max)}`}
           data-selected={String(activeLevel)}
           value={String(activeLevel)}
           onChange={handleSelect}

@@ -22,7 +22,7 @@ import { getSchool } from "./utils/formatSpells";
 import { capitalize } from "./utils/helpers";
 import type { DDSpell, DDClassTypes } from "./types";
 
-// v2.22.0
+// v2.22.2
 const DDData = {
   PHB: { spell: PHB.spell, classes: Sources.PHB }, // Player's Handbook [2014] (361) ✓?
   XPHB: { spell: XPHB.spell, classes: Sources.XPHB }, // Player's Handbook [2024] (391) ✓?
@@ -41,7 +41,7 @@ const DDData = {
   IDRotF: { spell: IDRotF.spell, classes: Sources.IDRotF }, // Icewind Dale: Rime of the Frostmaiden (3) ✓ [Blade of Disaster found in TCE]
   LLK: { spell: LLK.spell, classes: Sources.LLK }, // Lost Laboratory of Kwalish (3) ✓
   SatO: { spell: SatO.spell, classes: Sources.SatO }, // Sigil and the Outlands (2) ✓
-  TDCSR: { spell: TDCSR.spell, classes: Sources.TDCSR }, // Tal'Dorei Campaign Setting: Reborn (2) ✓
+  TDCSR: { spell: TDCSR.spell, classes: null }, // Tal'Dorei Campaign Setting: Reborn (2) ✓
 };
 const DDSpells: DDSpell[] = [];
 

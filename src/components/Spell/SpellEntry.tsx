@@ -35,8 +35,8 @@ export default function SpellEntry({
   };
 
   return (
-    <div className={styles.spellEntries}>
-      <dd>
+    <dd>
+      <div className={styles.spellEntries}>
         <details onToggle={handleToggle} open={isPrepared}>
           <summary>Spell Description</summary>
 
@@ -106,7 +106,7 @@ export default function SpellEntry({
               })
             )}
         </details>
-      </dd>
-    </div>
+      </div>
+    </dd>
   );
 }

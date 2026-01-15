@@ -157,7 +157,6 @@ export default function Filters({
             <Steps
               id="level"
               label="Spell Level"
-              min={0}
               max={9}
               activeLevel={activeLevel}
               setActiveLevel={setActiveLevel}

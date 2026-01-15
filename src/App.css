@@ -62,10 +62,24 @@ body {
   padding-right: 1rem;
 
   text-align: right;
+}
 
-  @media screen and (min-width: 37.5rem) {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+.grid-container {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media screen and (min-width: 50rem) {
+    padding-right: 0;
+  }
+}
+
+.grid {
+  opacity: 0;
+  transition: opacity 0.1s;
+
+  &.loaded {
+    opacity: 1;
   }
 }
 

@@ -1,29 +1,22 @@
 .spell {
   margin-bottom: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
 
   width: 100%;
 
-  @media screen and (min-width: 37.5rem) {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
   @media screen and (min-width: 50rem) {
-    width: 50%;
+    width: calc(50% - 1rem);
   }
 
   @media screen and (min-width: 81rem) {
-    width: 33.3%;
+    width: calc(33.3% - 1rem);
   }
 
   @media screen and (min-width: 108rem) {
-    width: 25%;
+    width: calc(25% - 1rem);
   }
 
   @media screen and (min-width: 135rem) {
-    width: 20%;
+    width: calc(20% - 1rem);
   }
 
   button {
@@ -197,4 +190,8 @@
       text-align: right;
     }
   }
+}
+
+.spellSource {
+  font-size: 0.8rem;
 }

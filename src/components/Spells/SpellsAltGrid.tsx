@@ -3,6 +3,7 @@ import Spell from "../Spell";
 import Collapsible from "../Collapsible";
 import Masonry from "masonry-layout";
 import type { DDSpell } from "../../types";
+import styles from "./spells.module.css";
 
 type GridAltProps = {
   preparedSpells: DDSpell[];
@@ -34,6 +35,7 @@ export default function SpellsAltGrid({
       msnry.current = new Masonry(gridElem, {
         itemSelector: ".grid-item",
         percentPosition: true,
+        gutter: 16,
       });
       msnry.current!.layout!();
 
@@ -57,35 +59,43 @@ export default function SpellsAltGrid({
       id="collapsibleSpells"
       label={`Prepared Spells (${preparedSpells.length})`}
     >
-      <dl className="alt-grid">
-        {0 !== preparedSpells.length &&
-          preparedSpells.map((spell) => (
-            <Spell
-              key={`${spell.source.toLowerCase()}-${spell.index}-prepared`}
-              searchTerm={null}
-              preparedSpells={preparedSpells}
-              isPrepared={true}
-              spell={spell}
-              msnry={msnry}
-            >
-              <button
-                onClick={() => {
-                  const newSpells = preparedSpells
-                    .filter((prepared) => spell !== prepared)
-                    .sort(
-                      (a, b) =>
-                        a.level - b.level || a.name.localeCompare(b.name)
-                    );
-                  setPreparedSpells(newSpells);
-                }}
-                aria-label={`Remove ${spell.name}`}
-                aria-checked="true"
+      <div className="grid-container">
+        <dl className="alt-grid">
+          {0 !== preparedSpells.length &&
+            preparedSpells.map((spell) => (
+              <Spell
+                key={`${spell.source.toLowerCase()}-${spell.index}-prepared`}
+                searchTerm={null}
+                preparedSpells={preparedSpells}
+                isPrepared={true}
+                spell={spell}
+                msnry={msnry}
               >
-                Remove
-              </button>
-            </Spell>
-          ))}
-      </dl>
+                <dd className={styles.spellStatus}>
+                  <button
+                    role="switch"
+                    type="button"
+                    onClick={() => {
+                      const newSpells = preparedSpells
+                        .filter((prepared) => spell !== prepared)
+                        .sort(
+                          (a, b) =>
+                            a.level - b.level || a.name.localeCompare(b.name)
+                        );
+                      setPreparedSpells(newSpells);
+                    }}
+                    aria-label={`Remove ${spell.name}`}
+                    aria-checked="true"
+                  >
+                    Remove
+                  </button>
+                </dd>
+
+                <dd className={styles.spellSlots}></dd>
+              </Spell>
+            ))}
+        </dl>
+      </div>
 
       {0 === preparedSpells.length && (
         <div className="no-results">

@@ -1,11 +1,6 @@
 .spellContainer {
   max-width: none;
 
-  @media screen and (min-width: 37.5rem) {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
   ul {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -32,6 +27,16 @@
 
   button {
     &[aria-controls] {
+      padding-left: 1rem;
+      padding-right: 1rem;
+
+      &:before {
+        @media screen and (min-width: 37.5rem) {
+          left: 1rem;
+          width: calc(100% - 3.375rem);
+        }
+      }
+
       span {
         &:after {
           left: 1rem;
@@ -45,5 +50,16 @@
         }
       }
     }
+  }
+}
+
+.spellStatus {
+  text-align: right;
+
+  button {
+    margin-bottom: 0.25rem;
+    margin-right: 2.125rem;
+
+    flex-basis: auto;
   }
 }

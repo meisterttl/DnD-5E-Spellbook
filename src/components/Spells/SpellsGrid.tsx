@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Spell from "../Spell";
 import Masonry from "masonry-layout";
 import type { DDSpell } from "../../types";
+import styles from "./spells.module.css";
 
 type Props = {
   filteredSpells: DDSpell[];
@@ -27,9 +28,10 @@ export default function SpellsGrid({
       msnry.current = new Masonry(gridElem, {
         itemSelector: ".grid-item",
         percentPosition: true,
+        gutter: 16,
       });
       msnry.current!.layout!(); // Just in case it's not laid out properly
-
+      gridElem.classList.add("loaded");
       noResult.current = false;
     }
 
@@ -41,7 +43,7 @@ export default function SpellsGrid({
   }, [filteredSpells, msnry]);
 
   return (
-    <>
+    <div className="grid-container">
       <dl className="grid">
         {0 !== filteredSpells.length &&
           filteredSpells.map((spell) => {
@@ -62,31 +64,35 @@ export default function SpellsGrid({
                 spell={spell}
                 msnry={msnry}
               >
-                <button
-                  onClick={() => {
-                    const newSpells = !isPrepared
-                      ? [...preparedSpells, spell]
-                      : preparedSpells.filter(
-                          (prepared) =>
-                            !(
-                              spell.name === prepared.name &&
-                              spell.source === prepared.source
-                            )
-                        );
-                    newSpells.sort(
-                      (a, b) =>
-                        a.level - b.level || a.name.localeCompare(b.name)
-                    );
+                <dd className={styles.spellStatus}>
+                  <button
+                    role="switch"
+                    type="button"
+                    onClick={() => {
+                      const newSpells = !isPrepared
+                        ? [...preparedSpells, spell]
+                        : preparedSpells.filter(
+                            (prepared) =>
+                              !(
+                                spell.name === prepared.name &&
+                                spell.source === prepared.source
+                              )
+                          );
+                      newSpells.sort(
+                        (a, b) =>
+                          a.level - b.level || a.name.localeCompare(b.name)
+                      );
 
-                    setPreparedSpells(newSpells);
-                  }}
-                  aria-label={`${!isPrepared ? "Prepare" : "Remove"} ${
-                    spell.name
-                  }`}
-                  aria-checked={isPrepared}
-                >
-                  {!isPrepared ? "Prepare" : "Remove"}
-                </button>
+                      setPreparedSpells(newSpells);
+                    }}
+                    aria-label={`${!isPrepared ? "Prepare" : "Remove"} ${
+                      spell.name
+                    }`}
+                    aria-checked={isPrepared}
+                  >
+                    {!isPrepared ? "Prepare" : "Remove"}
+                  </button>
+                </dd>
               </Spell>
             );
           })}
@@ -99,6 +105,6 @@ export default function SpellsGrid({
           </p>
         </div>
       )}
-    </>
+    </div>
   );
 }
