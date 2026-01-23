@@ -1,3 +1,13 @@
+import isUpdated from "../utils/errata";
+import { getSchool } from "../utils/formatSpells";
+import type {
+  DDSpell,
+  DDCharacterClass,
+  DDClassTypes,
+  DDSpellSlots,
+} from "../types";
+import { fetchAllSlots, fetchAllSpells } from "../dal";
+
 export const capitalize = (word: string) =>
   `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
 
@@ -10,6 +20,98 @@ export const highlightSearchTerms = (word: string, needle: string) => {
   const regex = new RegExp(String.raw`(${needle})`, "gi");
 
   return "" === needle ? word : word.replace(regex, `<mark>$1</mark>`);
+};
+
+export const loadAllSlots = async (jsons: string[]) => {
+  const data = await fetchAllSlots(jsons);
+  const DDSlots: DDSpellSlots[] = data
+    .map((type) => {
+      const spellSlots: DDSpellSlots = type
+        .map((each: DDCharacterClass) => {
+          const slots = each.classTableGroups.find(
+            (obj) => "rowsSpellProgression" in obj,
+          );
+
+          return slots
+            ? {
+                className: each.name,
+                source: each.source,
+                slots: slots.rowsSpellProgression!,
+              }
+            : undefined;
+        })
+        .filter((each: DDSpellSlots) => each);
+
+      return spellSlots;
+    })
+    .flat();
+
+  return DDSlots;
+};
+
+export const loadAllSpells = async (jsons: string[], source: string) => {
+  const DDData = await fetchAllSpells(jsons, source);
+  const DDSpells: DDSpell[] = [];
+
+  for (const source in DDData) {
+    const bKey = source as keyof typeof DDData; // Book Key
+    const spellData = DDData[bKey].spell;
+    const classData = DDData[bKey].classes;
+
+    const newSpellData = spellData.map((spell: DDSpell) => {
+      const sClasses = classData
+        ? (classData![spell.name as keyof typeof classData] as DDClassTypes)
+        : null;
+
+      const spellModified: DDSpell = {
+        name: spell.name,
+        index: spell.name
+          .toLowerCase()
+          .replace(/[\s/]/g, "-") // Empty space and Forward slash
+          .replace(/\u0027/g, ""), // Apostrophe
+        source: spell.source,
+        page: spell.page,
+        level: spell.level,
+        classes: [],
+        school: capitalize(getSchool(spell.school)!),
+        time: spell.time,
+        range: spell.range,
+        components: spell.components,
+        duration: spell.duration,
+        entries: spell.entries,
+      };
+
+      if ("otherSources" in spell) {
+        spellModified.otherSources = spell.otherSources;
+      }
+
+      if ("meta" in spell) {
+        spellModified.meta = spell.meta;
+      }
+
+      if ("entriesHigherLevel" in spell) {
+        spellModified.entriesHigherLevel = spell.entriesHigherLevel;
+      }
+
+      if ("scalingLevelDice" in spell) {
+        spellModified.scalingLevelDice = spell.scalingLevelDice;
+      }
+
+      if (sClasses && "class" in sClasses) {
+        spellModified.classes!.push(...sClasses.class!);
+      }
+
+      if (sClasses && "classVariant" in sClasses) {
+        spellModified.classes!.push(...sClasses.classVariant!);
+      }
+
+      return isUpdated(spellModified);
+    });
+
+    DDSpells.push(...newSpellData);
+  }
+
+  return DDSpells;
 };
 
 export const loadSettings = (name: string) => {

@@ -22,7 +22,7 @@ export default function SpellsGrid({
 
   useEffect(() => {
     // Needs to re-initialize Masonry layout when there are 0 spells visible on the screen
-    if (0 !== filteredSpells.length && noResult.current) {
+    if (filteredSpells.length && noResult.current) {
       const gridElem = document.querySelector(".grid")!;
 
       msnry.current = new Masonry(gridElem, {
@@ -35,24 +35,26 @@ export default function SpellsGrid({
       noResult.current = false;
     }
 
-    // Reload and lay out spells
-    msnry.current!.reloadItems!();
-    msnry.current!.layout!();
-
-    if (0 === filteredSpells.length) noResult.current = true;
+    if (filteredSpells.length) {
+      // Reload and lay out spells
+      msnry.current!.reloadItems!();
+      msnry.current!.layout!();
+    } else {
+      noResult.current = true;
+    }
   }, [filteredSpells, msnry]);
 
   return (
     <div className="grid-container">
-      <dl className="grid">
-        {0 !== filteredSpells.length &&
-          filteredSpells.map((spell) => {
+      {0 !== filteredSpells.length && (
+        <dl className="grid">
+          {filteredSpells.map((spell) => {
             const isPrepared =
-              0 !== preparedSpells.length &&
+              !!preparedSpells.length &&
               !!preparedSpells.find(
                 (prepared) =>
                   spell.name === prepared.name &&
-                  spell.source === prepared.source
+                  spell.source === prepared.source,
               );
 
             return (
@@ -76,11 +78,11 @@ export default function SpellsGrid({
                               !(
                                 spell.name === prepared.name &&
                                 spell.source === prepared.source
-                              )
+                              ),
                           );
                       newSpells.sort(
                         (a, b) =>
-                          a.level - b.level || a.name.localeCompare(b.name)
+                          a.level - b.level || a.name.localeCompare(b.name),
                       );
 
                       setPreparedSpells(newSpells);
@@ -96,9 +98,10 @@ export default function SpellsGrid({
               </Spell>
             );
           })}
-      </dl>
+        </dl>
+      )}
 
-      {0 === filteredSpells.length && (
+      {!filteredSpells.length && (
         <div className="no-results">
           <p className="lead alert">
             No spells found {!!searchTerm && `(Search term: ${searchTerm})`}

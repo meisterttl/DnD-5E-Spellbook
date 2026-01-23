@@ -84,12 +84,12 @@ export default function Spell({
       </dd>
 
       <dd className={styles.spellComponents}>
-        <b>Components:</b>
+        <b>Components: </b>
         {getComponents(spell.components)}
       </dd>
 
       <dd>
-        <b>Duration:</b>
+        <b>Duration: </b>
         {getDuration(spell.duration)}
       </dd>
 

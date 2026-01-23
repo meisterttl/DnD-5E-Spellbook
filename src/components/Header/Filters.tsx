@@ -22,7 +22,7 @@ type Props = {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
 
-type sortKey = "name" | "school";
+// type sortKey = "name" | "school";
 
 export default function Filters({
   allSpells,
@@ -35,7 +35,7 @@ export default function Filters({
   const [activeClass, setActiveClass] = useState<string>("");
   const [activeSchool, setActiveSchool] = useState<string>("");
   const [activeLevel, setActiveLevel] = useState<number>(-1);
-  const [sortBy, setSortBy] = useState<string>("name");
+  // const [sortBy, setSortBy] = useState<string>("name");
 
   const filterSpells = useCallback(
     (name: string) => {
@@ -59,15 +59,16 @@ export default function Filters({
           -1 !== activeLevel ? activeLevel === spell.level : true
         )
         .filter((spell) => stringMatch(spell.index!, needle))
-        .sort((a, b) =>
-          "level" === sortBy
-            ? a.level - b.level
-            : a[sortBy as sortKey].localeCompare(b[sortBy as sortKey])
-        );
+        .sort((a, b) => a.name.localeCompare(b.name));
+      // .sort((a, b) =>
+      //   "level" === sortBy
+      //     ? a.level - b.level
+      //     : a[sortBy as sortKey].localeCompare(b[sortBy as sortKey])
+      // );
 
       return results;
     },
-    [activeClass, activeLevel, activeSchool, activeSources, allSpells, sortBy]
+    [activeClass, activeLevel, activeSchool, activeSources, allSpells]
   );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,8 +85,8 @@ export default function Filters({
     setSearchTerm("");
   };
 
-  const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setSortBy(e.currentTarget.value);
+  // const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) =>
+  //   setSortBy(e.currentTarget.value);
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const isVisible = e.currentTarget.ariaExpanded;
@@ -179,7 +180,8 @@ export default function Filters({
         </form>
       </div>
 
-      <div className={styles.status}>
+      {/* // Not sure if sorting functino is useful here */}
+      {/* <div className={styles.status}>
         <div className={styles.sortContainer}>
           <label htmlFor="sort">Sort by</label>
 
@@ -189,7 +191,7 @@ export default function Filters({
             <option value="level">Level</option>
           </select>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

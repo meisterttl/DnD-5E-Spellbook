@@ -114,6 +114,11 @@ body {
   font-size: 80%;
 }
 
+.loader-container {
+  display: flex;
+  justify-content: center;
+}
+
 table {
   th,
   td {

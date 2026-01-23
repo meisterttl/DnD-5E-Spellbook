@@ -45,9 +45,7 @@ export default function SpellsAltGrid({
     if (0 !== preparedSpells.length) {
       msnry.current!.reloadItems!();
       msnry.current!.layout!();
-    }
-
-    if (0 === preparedSpells.length) {
+    } else {
       if (msnry.current) msnry.current!.destroy!();
       noResult.current = true;
     }
@@ -60,9 +58,9 @@ export default function SpellsAltGrid({
       label={`Prepared Spells (${preparedSpells.length})`}
     >
       <div className="grid-container">
-        <dl className="alt-grid">
-          {0 !== preparedSpells.length &&
-            preparedSpells.map((spell) => (
+        {0 !== preparedSpells.length && (
+          <dl className="alt-grid">
+            {preparedSpells.map((spell) => (
               <Spell
                 key={`${spell.source.toLowerCase()}-${spell.index}-prepared`}
                 searchTerm={null}
@@ -80,7 +78,7 @@ export default function SpellsAltGrid({
                         .filter((prepared) => spell !== prepared)
                         .sort(
                           (a, b) =>
-                            a.level - b.level || a.name.localeCompare(b.name)
+                            a.level - b.level || a.name.localeCompare(b.name),
                         );
                       setPreparedSpells(newSpells);
                     }}
@@ -94,7 +92,8 @@ export default function SpellsAltGrid({
                 <dd className={styles.spellSlots}></dd>
               </Spell>
             ))}
-        </dl>
+          </dl>
+        )}
       </div>
 
       {0 === preparedSpells.length && (
